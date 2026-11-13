@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" data-contrast="normal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MathAble — 보이지 않아도, 수학은 이해할 수 있도록</title>
+<style>
+:root{--scale:1.3;--tap:56px;--gw:1.3;color-scheme:light;
+ --bg:#f2f4f6;--card:#ffffff;--fill:#f2f4f6;--fill2:#e5e8eb;
+ --text:#191f28;--text2:#333d4b;--sub:#4e5968;--muted:#5f6977;--line:#e5e8eb;--line-strong:#b0b8c1;
+ --blue:#2272eb;--blue-text:#1b64da;--blue-weak:#e8f3ff;--on-blue:#ffffff;
+ --orange:#d9480f;--orange-text:#b23c0a;--orange-weak:#fff1e6;
+ --t1:#e8f3ff;--t2:#fff1e0;--t3:#efeaff;--t4:#e6f7ef;--t5:#f2f4f6;
+ --g-bg:#ffffff;--g-grid:#e5e8eb;--g-axis:#333d4b;--g-func:#2272eb;--g-sec:#e2580c;--g-tan:#191f28;--g-guide:#5f6977;--g-pt:#191f28;
+ --focus:#191f28;--glow:rgba(49,130,246,.45);
+ --r:22px;--r-s:16px;--shadow:0 1px 2px rgba(0,23,51,.03),0 8px 24px rgba(0,23,51,.05);--bw:0px}
+html[data-theme="dark"]{color-scheme:dark;
+ --bg:#101013;--card:#1c1c21;--fill:#2a2a31;--fill2:#36363f;
+ --text:#f9fafb;--text2:#e7e7ea;--sub:#c4c4cb;--muted:#a6a6b0;--line:#30303a;--line-strong:#5a5a66;
+ --blue:#1f6fe5;--blue-text:#7ab4ff;--blue-weak:#17294a;--on-blue:#ffffff;
+ --orange:#ff9a4d;--orange-text:#ffad70;--orange-weak:#3a2414;
+ --t1:#17294a;--t2:#3a2a14;--t3:#2b2447;--t4:#14352a;--t5:#2a2a31;
+ --g-bg:#1c1c21;--g-grid:#2f2f38;--g-axis:#d6d6dc;--g-func:#6aa8ff;--g-sec:#ffa04d;--g-tan:#f2f2f5;--g-guide:#a6a6b0;--g-pt:#ffffff;
+ --focus:#ffffff;--glow:rgba(106,168,255,.55);--shadow:none}
+html[data-contrast="high"]{--bw:3px;--shadow:none;
+ --bg:#ffffff;--card:#ffffff;--fill:#ffffff;--fill2:#eeeeee;--text:#000;--text2:#000;--sub:#000;--muted:#000;--line:#000;--line-strong:#000;
+ --blue:#0033cc;--blue-text:#0033cc;--blue-weak:#ffffff;--orange:#8a2e00;--orange-text:#8a2e00;--orange-weak:#ffffff;
+ --t1:#fff;--t2:#fff;--t3:#fff;--t4:#fff;--t5:#fff;
+ --g-bg:#fff;--g-grid:#8a8a8a;--g-axis:#000;--g-func:#0033cc;--g-sec:#a33a00;--g-tan:#000;--g-guide:#000;--g-pt:#000;--focus:#000;--glow:rgba(0,0,0,.25)}
+html[data-contrast="high"][data-theme="dark"]{
+ --bg:#000;--card:#000;--fill:#000;--fill2:#222;--text:#fff;--text2:#fff;--sub:#fff;--muted:#fff;--line:#fff;--line-strong:#fff;
+ --blue:#ffff00;--blue-text:#ffff00;--blue-weak:#000;--on-blue:#000;--orange:#00e5ff;--orange-text:#00e5ff;--orange-weak:#000;
+ --t1:#000;--t2:#000;--t3:#000;--t4:#000;--t5:#000;
+ --g-bg:#000;--g-grid:#6a6a6a;--g-axis:#fff;--g-func:#ffff00;--g-sec:#00e5ff;--g-tan:#fff;--g-guide:#fff;--g-pt:#fff;--focus:#ffff00;--glow:rgba(255,255,0,.35)}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:6rem;font-size:calc(112.5% * var(--scale));-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:1.05rem;line-height:1.68;letter-spacing:-0.01em;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+a{color:var(--blue-text);text-decoration-thickness:.1em;text-underline-offset:.2em}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;box-shadow:0 0 0 7px var(--glow)}
+[tabindex="-1"]:focus{outline:none;box-shadow:none}
+.skip{position:absolute;left:.5rem;top:-20rem;z-index:30}.skip:focus{top:.5rem}
+/* header */
+.topbar{background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:saturate(1.8) blur(14px);-webkit-backdrop-filter:saturate(1.8) blur(14px);position:sticky;top:0;z-index:10;border-bottom:max(1px,var(--bw)) solid var(--line)}
+html.big .topbar{position:static}
+.topbar .in{max-width:62rem;margin:0 auto;padding:.35rem 1rem;display:flex;flex-wrap:wrap;align-items:center;gap:.2rem 1rem}
+.brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.2rem;letter-spacing:-0.03em;color:var(--text);text-decoration:none;min-height:var(--tap)}
+.brand svg{width:1.9rem;height:1.9rem;flex:none}
+.mainnav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.25rem}
+.navlink{display:inline-flex;align-items:center;min-height:calc(var(--tap) - 8px);padding:.2rem .95rem;border-radius:999px;color:var(--sub);text-decoration:none;font-weight:700}
+.navlink:hover{background:var(--fill)}
+.navlink[aria-current="page"]{background:var(--text2);color:var(--card)}
+html[data-contrast="high"] .navlink[aria-current="page"]{text-decoration:underline;text-decoration-thickness:.15em}
+main{max-width:50rem;margin:0 auto;padding:1rem 1rem 7rem}
+main:focus{outline:none}
+h1{font-size:1.85rem;line-height:1.32;letter-spacing:-0.035em;font-weight:800;margin:.8rem 0 .5rem}
+h2{font-size:1.38rem;line-height:1.38;letter-spacing:-0.03em;font-weight:800;margin:1.4rem 0 .5rem}
+h3{font-size:1.16rem;line-height:1.42;letter-spacing:-0.02em;font-weight:800;margin:1.1rem 0 .35rem}
+h4{font-size:1.06rem;margin:.8rem 0 .3rem}
+p{margin:.45rem 0}
+.sub{color:var(--sub)}.small{font-size:.92rem}
+.lead{font-size:1.2rem;font-weight:600;color:var(--text2)}
+.eyebrow{font-size:.95rem;font-weight:700;color:var(--blue-text);margin:0}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:var(--tap);min-width:var(--tap);padding:.4rem 1.05rem;font:inherit;font-weight:700;line-height:1.3;letter-spacing:-0.01em;color:var(--text2);background:var(--fill);border:var(--bw) solid var(--line);border-radius:14px;text-decoration:none;cursor:pointer;text-align:center;transition:transform .12s ease,background-color .15s ease;-webkit-tap-highlight-color:transparent}
+.btn:hover{background:var(--fill2)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
+.btn.primary:hover{filter:brightness(.94)}
+.btn.weak{background:var(--blue-weak);color:var(--blue-text)}
+.btn.block{display:flex;width:100%}
+.btn.sm{min-height:max(44px,calc(var(--tap) - 12px));padding:.25rem .9rem;font-size:.95rem}
+.btn[aria-pressed="true"]{background:var(--text2);color:var(--card);border-color:var(--text2)}
+.btn[aria-pressed="true"]::before{content:"✓" / "";font-weight:900}
+.btn:disabled{color:var(--muted);cursor:not-allowed;transform:none}
+.btnrow{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.7rem 0}
+.btnrow .grp-lab{flex-basis:100%;font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:-.15rem}
+/* surfaces */
+.card{background:var(--card);border-radius:var(--r);padding:1.3rem 1.35rem;margin:1rem 0;box-shadow:var(--shadow);border:var(--bw) solid var(--line)}
+.card>h2:first-child,.card>.card-eyebrow:first-child{margin-top:0}
+.card-eyebrow{font-size:1rem;font-weight:700;color:var(--muted);letter-spacing:-0.01em;margin:0 0 .5rem}
+.box{background:var(--fill);border-radius:var(--r-s);padding:1rem 1.15rem;margin:1rem 0;border:var(--bw) solid var(--line)}
+.box>h3:first-child{margin-top:0}
+.key,.warn-note{border-radius:var(--r-s);padding:1rem 1.15rem;margin:1rem 0;font-weight:700;font-size:1.1rem;border:var(--bw) solid var(--line)}
+.key{background:var(--blue-weak)}
+.warn-note{background:var(--orange-weak)}
+.key .tag,.warn-note .tag{display:block;margin-bottom:.2rem}
+.tag{font-size:.86em;font-weight:800;color:var(--blue-text);margin-right:.35em}
+.warn-note .tag{color:var(--orange-text)}
+html[data-contrast="high"] .warn-note{border-style:dashed}
+.note{color:var(--sub)}
+.terms dt{font-weight:800;margin-top:.6rem}.terms dd{margin:0 0 .3rem 0;color:var(--text2)}
+/* formula */
+.fwrap{overflow-x:auto;margin:.55rem 0;-webkit-overflow-scrolling:touch;border-radius:var(--r-s)}
+.formula{display:block;min-width:100%;width:max-content;text-align:left;font:inherit;font-size:1.15rem;color:var(--text);background:var(--fill);border:var(--bw) solid var(--line);border-radius:var(--r-s);padding:.55rem 1.1rem .5rem;cursor:zoom-in;transition:background-color .15s}
+.formula:hover{background:var(--fill2)}
+.fhint{display:block;font-size:.74rem;color:var(--muted);font-weight:600;margin-top:.1rem}
+mjx-container[display="true"]{margin:.25em 0!important;text-align:left!important}
+.calc{padding-left:1.5rem}.calc>li{margin:.6rem 0}.calc>li::marker{font-weight:800;color:var(--blue-text)}.calc>li>h3{margin-top:.3rem}
+/* lesson */
+.crumbs{font-size:.92rem;color:var(--muted);margin-top:.5rem}.crumbs a{color:var(--muted)}
+.lp{margin:.8rem 0 .4rem}
+.lp-top{display:flex;justify-content:space-between;gap:1rem;font-weight:700;font-size:.95rem;color:var(--sub);margin-bottom:.4rem}
+.lp-top b{color:var(--blue-text)}
+.progress{height:10px;background:var(--fill2);border-radius:99px;overflow:hidden}
+.progress>span{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .3s ease}
+html[data-contrast="high"] .progress{border:2px solid var(--text);height:14px}
+.stepper{list-style:none;padding:0;margin:.8rem 0 0;display:flex;flex-wrap:wrap;gap:.4rem}
+.stp{display:flex;align-items:center;gap:.4rem;min-height:max(44px,calc(var(--tap) - 10px));padding:.2rem .85rem .2rem .3rem;border-radius:999px;color:var(--sub);text-decoration:none;font-weight:700;font-size:.92rem;background:var(--card);border:var(--bw) solid var(--line)}
+.stp-n{display:inline-grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;background:var(--fill);font-weight:800;flex:none;color:var(--text2)}
+.stp.seen .stp-n{background:var(--blue-weak);color:var(--blue-text)}
+.stp.cur{background:var(--text2);color:var(--card)}
+.stp.cur .stp-n{background:var(--card);color:var(--text)}
+.step-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:.5rem 1rem}
+.step-head h2{margin:0}
+.stepno{display:block;font-size:.72em;color:var(--blue-text);font-weight:800;letter-spacing:0}
+.pager{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.pager .btn{flex:1 1 12rem}
+.pager .btn:not(.primary),main>.btnrow .btn:not(.primary):not(.weak){background:var(--card)}
+.pager .btn:not(.primary):hover{background:var(--fill2)}
+/* graph */
+.gpanel{margin:1rem 0}
+.gbox{border-radius:var(--r-s);overflow:hidden;background:var(--g-bg);border:max(1px,var(--bw)) solid var(--line)}
+.gsvg{display:block;width:100%;height:auto}
+.readout{background:var(--fill);border-radius:var(--r-s);padding:.85rem 1.1rem;margin:.7rem 0;font-size:1.1rem;font-variant-numeric:tabular-nums;border:var(--bw) solid var(--line)}
+.readout p{margin:.15rem 0}.readout b{font-size:1.18em;color:var(--text)}
+.ro-main{font-size:1.32em;font-weight:800;letter-spacing:-0.02em}
+.ro-list{margin:.2rem 0;padding-left:1.15rem}
+.ro-sp{font-weight:800;color:var(--blue-text)}
+.legend-wrap>summary{font-weight:700;min-height:var(--tap);display:flex;align-items:center;cursor:pointer;color:var(--sub);list-style:none}
+.legend-wrap>summary::-webkit-details-marker{display:none}
+.legend-wrap>summary::after{content:"" / "";width:.55em;height:.55em;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg);margin-left:.6em;margin-top:-.25em;transition:transform .2s}
+.legend-wrap[open]>summary::after{transform:rotate(225deg);margin-top:.25em}
+.legend{list-style:none;padding:0;margin:0 0 .5rem;display:grid;gap:.3rem}
+.legend li{display:flex;align-items:center;gap:.75rem;color:var(--text2)}
+.legend svg{flex:none;width:3.6rem;height:1.3rem}
+.legend .g-func{stroke-width:calc(4.5px * var(--gw))}.legend .g-sec,.legend .g-tan{stroke-width:calc(3.6px * var(--gw))}.legend .g-guide{stroke-width:calc(2.4px * var(--gw))}
+.gctl{border-top:max(1px,var(--bw)) solid var(--line);margin-top:.4rem;padding-top:.3rem}
+.g-grid{stroke:var(--g-grid);stroke-width:1}
+.g-axis{stroke:var(--g-axis)}.g-axfill{fill:var(--g-axis)}
+.g-func{fill:none;stroke:var(--g-func);stroke-linejoin:round;stroke-linecap:round}
+.g-sec{stroke:var(--g-sec);stroke-dasharray:18 10}
+.g-tan{stroke:var(--g-tan);stroke-dasharray:3 9;stroke-linecap:round}
+.g-guide{stroke:var(--g-guide);stroke-dasharray:3 6}
+.g-pt{fill:var(--g-pt);stroke:var(--g-bg);stroke-width:3}
+.g-pth{fill:var(--g-bg);stroke:var(--g-pt);stroke-width:3.5}
+.g-lab{fill:var(--text);font-weight:800;paint-order:stroke;stroke:var(--g-bg);stroke-width:6px;stroke-linejoin:round;font-family:inherit}
+.g-tick{fill:var(--muted);font-weight:600;paint-order:stroke;stroke:var(--g-bg);stroke-width:4px;stroke-linejoin:round;font-family:inherit}
+/* choices */
+.choices{border:0;padding:0;margin:.9rem 0}
+.choices>legend{font-weight:700;font-size:.95rem;color:var(--muted);margin-bottom:.35rem;padding:0}
+.opt{position:relative;display:flex;align-items:center;gap:.85rem;min-height:var(--tap);padding:.55rem 1.05rem;margin:.5rem 0;border-radius:var(--r-s);background:var(--fill);cursor:pointer;font-weight:600;border:var(--bw) solid var(--line);transition:background-color .15s,box-shadow .15s}
+.opt:hover{background:var(--fill2)}
+.opt input{appearance:none;-webkit-appearance:none;width:1.55rem;height:1.55rem;flex:none;margin:0;border-radius:50%;border:2.5px solid var(--line-strong);background:var(--card);display:grid;place-content:center;cursor:pointer}
+.opt input:checked{border-color:var(--blue);background:var(--blue)}
+.opt input:checked::after{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--on-blue)}
+.opt:has(input:checked){background:var(--blue-weak);box-shadow:inset 0 0 0 2.5px var(--blue)}
+html[data-contrast="high"] .opt:has(input:checked){border-width:6px;border-color:var(--blue)}
+.opt:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:3px;box-shadow:0 0 0 7px var(--glow)}
+.opt input:focus-visible{outline:none;box-shadow:none}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--fill);border-radius:var(--r-s);padding:4px;border:var(--bw) solid var(--line)}
+.seg .opt{flex:1 1 7rem;justify-content:center;text-align:center;margin:0;background:transparent;box-shadow:none;border:0;min-height:calc(var(--tap) - 8px);border-radius:12px;color:var(--sub);font-weight:700;padding:.35rem .7rem}
+.seg .opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.seg .opt:has(input:checked){background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06)}
+.seg .opt:has(input:checked) span::before{content:"✓ " / "";color:var(--blue-text);font-weight:900}
+html[data-contrast="high"] .seg .opt:has(input:checked){background:var(--text);color:var(--card);border:0}
+html[data-contrast="high"] .seg .opt:has(input:checked) span::before{color:var(--card)}
+.setgrp{border:0;padding:0;margin:1.2rem 0 0}
+.setgrp:first-of-type{margin-top:.4rem}
+.setgrp>legend{font-weight:800;font-size:1.08rem;padding:0;margin-bottom:.45rem}
+.help{color:var(--muted);margin:.15rem 0 .55rem;font-size:.95rem}
+.field{display:block;margin:1.2rem 0 0}.field-lab{display:block;font-weight:800;font-size:1.08rem;margin-bottom:.45rem}
+.select{font:inherit;font-weight:600;width:100%;min-height:var(--tap);padding:.3rem 1rem;border-radius:var(--r-s);background:var(--fill);color:var(--text);border:var(--bw) solid var(--line)}
+.notice{border-radius:var(--r-s);padding:.9rem 1.1rem;background:var(--fill);margin:.4rem 0 .8rem;border:var(--bw) solid var(--line)}
+.notice.ok{background:var(--blue-weak)}
+.notice-title{font-weight:800;margin:0 0 .2rem}
+/* quiz */
+.qbox{margin:.3rem 0}
+.qprompt{font-size:1.24rem;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
+.numlab{display:block;font-weight:700;color:var(--muted);margin-top:.9rem;font-size:.95rem}
+.numin{font:inherit;font-size:1.45rem;font-weight:700;min-height:var(--tap);width:100%;max-width:18rem;padding:.3rem 1rem;border:2.5px solid transparent;border-radius:var(--r-s);background:var(--fill);color:var(--text)}
+.numin:focus{border-color:var(--blue);background:var(--card);outline:none;box-shadow:0 0 0 6px var(--glow)}
+html[data-contrast="high"] .numin{border:3px solid var(--text)}
+.fb{margin:.9rem 0;border-radius:var(--r-s)}
+.fb:empty{display:none}
+.fb.ok,.fb.no,.fb.info{padding:.85rem 1.1rem;border:var(--bw) solid var(--line)}
+.fb.ok{background:var(--blue-weak)}
+.fb.no{background:var(--orange-weak)}
+html[data-contrast="high"] .fb.no{border-style:dashed}
+.fb.info{background:var(--fill)}
+.fb-title{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.16em;margin:.1rem 0 .25rem}
+.ic-c{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;font-size:.85em;font-weight:900;flex:none;color:#fff}
+.fb.ok .ic-c{background:var(--blue);color:var(--on-blue)}.fb.no .ic-c{background:var(--orange-text);color:var(--card)}
+.hints{background:var(--fill);border-radius:var(--r-s);padding:.7rem 1.1rem .7rem 2.4rem;margin:.7rem 0;border:var(--bw) solid var(--line)}
+.hints:empty{display:none}.hints li{margin:.3rem 0}.hints li::marker{font-weight:800;color:var(--blue-text)}
+.expl{border-top:max(1px,var(--bw)) solid var(--line);margin-top:1.1rem;padding-top:.4rem}
+.done-msg:empty{display:none}
+.done-msg{background:var(--blue-weak);border-radius:var(--r-s);padding:.9rem 1.1rem;margin:1rem 0;font-weight:700;border:var(--bw) solid var(--line)}
+/* tables */
+.tscroll{overflow-x:auto}
+.dtable{border-collapse:collapse;margin:.8rem 0;min-width:min(100%,22rem);font-variant-numeric:tabular-nums}
+.dtable caption{text-align:left;font-weight:800;margin-bottom:.35rem}
+.dtable th,.dtable td{border-bottom:max(1px,var(--bw)) solid var(--line);padding:.5rem .9rem;text-align:center}
+.dtable thead th{color:var(--muted);font-weight:700;font-size:.92rem;border-bottom-width:2px}
+.dtable tbody th{font-weight:700}
+html[data-contrast="high"] .dtable th,html[data-contrast="high"] .dtable td{border:2px solid var(--text)}
+details.sol{background:var(--card);border-radius:var(--r-s);margin:.7rem 0;border:max(1px,var(--bw)) solid var(--line)}
+.box details.sol{background:var(--card)}
+details.sol>summary{min-height:var(--tap);display:flex;align-items:center;justify-content:space-between;padding:.2rem 1.1rem;font-weight:800;cursor:pointer;list-style:none;color:var(--blue-text)}
+details.sol>summary::-webkit-details-marker{display:none}
+details.sol>summary::after{content:"" / "";width:.55em;height:.55em;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg);margin-top:-.25em;transition:transform .2s}
+details.sol[open]>summary::after{transform:rotate(225deg);margin-top:.25em}
+.sol-body{padding:0 1.1rem .9rem}
+/* home */
+.hello{padding:1.4rem 0 .4rem}
+.hello h1{font-size:2.05rem;margin:.35rem 0 0}
+.big-title{font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;margin:.1rem 0 0}
+.cta-meta{display:flex;justify-content:space-between;gap:1rem;color:var(--sub);font-weight:600;margin:.2rem 0 .7rem}
+.cta-meta b{color:var(--blue-text)}
+.list-card{padding:1.1rem .6rem .5rem}
+.list-card>.card-eyebrow{padding:0 .75rem}
+.list{list-style:none;margin:0;padding:0}
+.row{display:flex;align-items:center;gap:.95rem;min-height:calc(var(--tap) + 14px);padding:.6rem .75rem;border-radius:var(--r-s);color:var(--text);text-decoration:none;transition:background-color .15s}
+a.row:hover{background:var(--fill)}
+a.row:active{transform:scale(.99)}
+.row.here{background:var(--blue-weak)}
+html[data-contrast="high"] .row{border:3px solid var(--text);margin:.4rem 0}
+html[data-contrast="high"] .row.here{border-width:6px}
+.row.disabled{color:var(--muted)}
+.ic{display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:14px;font-size:1.3rem;flex:none}
+.num{display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--fill);font-weight:800;flex:none;color:var(--text2)}
+.row.here .num{background:var(--blue);color:var(--on-blue)}
+.row-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.row-title{font-weight:800;font-size:1.12rem;letter-spacing:-0.02em}
+.row-sub{color:var(--sub);font-size:.95rem}
+.row.disabled .row-sub{color:var(--muted)}
+.chev{flex:none;font-size:1.6rem;line-height:1;color:var(--line-strong);font-weight:300}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.35rem}
+.chip{display:inline-flex;align-items:center;border-radius:8px;padding:.05rem .5rem;font-size:.84rem;font-weight:700;background:var(--fill);color:var(--sub);border:var(--bw) solid var(--line)}
+.chip.blue{background:var(--blue-weak);color:var(--blue-text)}
+.chip.orange{background:var(--orange-weak);color:var(--orange-text)}
+.chip.dark{background:var(--text2);color:var(--card)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;min-height:var(--tap);padding:.4rem .25rem;background:none;border:0;font:inherit;font-weight:700;color:var(--text);cursor:pointer;text-align:left}
+.sw-r{display:flex;align-items:center;gap:.6rem;color:var(--sub);font-weight:700;font-size:.95rem}
+.sw-track{position:relative;width:3.3rem;height:2rem;border-radius:99px;background:var(--fill2);transition:background-color .2s;flex:none;border:var(--bw) solid var(--text)}
+.sw-track::after{content:"";position:absolute;top:.2rem;left:.2rem;width:1.6rem;height:1.6rem;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.switch[aria-pressed="true"] .sw-track{background:var(--blue)}
+.switch[aria-pressed="true"] .sw-track::after{transform:translateX(1.3rem)}
+html[data-contrast="high"] .sw-track::after{background:var(--text)}
+html[data-contrast="high"][data-theme="dark"] .switch[aria-pressed="true"] .sw-track::after{background:#000}
+.stepper-ctl{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:var(--tap);padding:.3rem .25rem}
+.stepper-ctl .val{font-weight:800;color:var(--blue-text)}
+.divider{height:max(1px,var(--bw));background:var(--line);margin:.35rem 0}
+.tips{margin:.2rem 0;padding-left:1.2rem}.tips li{margin:.35rem 0;color:var(--text2)}
+.qnav{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;padding:0}
+.big-num{font-size:2.4rem;font-weight:800;letter-spacing:-0.04em;margin:.2rem 0}
+.big-num small{font-size:.5em;color:var(--sub);font-weight:700}
+.confirm{background:var(--orange-weak);border-radius:var(--r-s);padding:.9rem 1.1rem;margin:.7rem 0;border:var(--bw) dashed var(--line)}
+/* bottom sheet */
+dialog{border:0;border-radius:28px 28px 0 0;margin:auto auto 0;width:100%;max-width:46rem;max-height:92vh;padding:0;background:var(--card);color:var(--text);box-shadow:0 -12px 48px rgba(0,0,0,.18);border-top:var(--bw) solid var(--text)}
+dialog[open]{animation:sheet .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes sheet{from{transform:translateY(60px);opacity:.3}to{transform:none;opacity:1}}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+.handle{width:42px;height:5px;border-radius:9px;background:var(--fill2);margin:.7rem auto 0}
+.dlg-in{padding:.6rem 1.4rem calc(1.2rem + env(safe-area-inset-bottom))}
+.dlg-in h2{margin-top:.4rem}
+.fd-mathwrap{overflow:auto;background:var(--fill);border-radius:var(--r-s);padding:.6rem 1.1rem;max-height:52vh;border:var(--bw) solid var(--line)}
+#fd-math{font-size:calc(var(--fz,2.2) * 1rem)}
+#fd-math mjx-container{margin:0!important}
+#fd-parts li{margin:.3rem 0}
+/* speaking pill */
+.speakpill{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:.7rem;background:var(--text);color:var(--card);border-radius:999px;padding:.4rem .45rem .4rem 1.15rem;box-shadow:0 10px 30px rgba(0,0,0,.22);font-weight:700;max-width:calc(100vw - 24px)}
+.speakpill[hidden]{display:none}
+.speakpill .btn{background:var(--card);color:var(--text);min-height:max(44px,calc(var(--tap) - 12px))}
+.eq{display:flex;align-items:flex-end;gap:3px;height:1.1em}
+.eq i{display:block;width:4px;height:40%;border-radius:2px;background:currentColor;animation:eq 1s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}
+@keyframes eq{0%,100%{height:30%}50%{height:100%}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:30rem){h1{font-size:1.6rem}.hello h1{font-size:1.75rem}}
+</style>
+<script>
+window.MathJax={
+ tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},
+ svg:{fontCache:'local',mtextInheritFont:true,scale:1.1},
+ options:{enableMenu:false,enableAssistiveMml:false},
+ startup:{typeset:false,ready(){MathJax.startup.defaultReady();MathJax.startup.promise.then(function(){window.__mj=true;document.dispatchEvent(new Event('mj-ready'));});}}
+};
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+</head>
+<body>
+<button type="button" class="btn skip" id="skip">본문 바로가기</button>
+<header class="topbar">
+ <div class="in">
+  <a class="brand" href="#home" aria-label="MathAble 홈">
+   <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="2" y="2" width="44" height="44" rx="12" fill="var(--blue)"/><path d="M8 37 C 20 37, 22 12, 40 10" fill="none" stroke="var(--on-blue)" stroke-width="4" stroke-linecap="round"/><line x1="9" y1="33" x2="39" y2="17" stroke="var(--on-blue)" stroke-width="2.5" stroke-dasharray="2 4" stroke-linecap="round"/><circle cx="23.5" cy="25" r="4" fill="var(--on-blue)"/></svg>
+   <span>MathAble</span>
+  </a>
+  <nav class="mainnav" aria-label="주요 메뉴">
+   <ul>
+    <li><a class="navlink" href="#home" data-nav="home">홈</a></li>
+    <li><a class="navlink" href="#toc" data-nav="toc">학습 목차</a></li>
+    <li><a class="navlink" href="#explore" data-nav="explore">그래프 탐색</a></li>
+    <li><a class="navlink" href="#quiz-1" data-nav="quiz">문제 풀이</a></li>
+    <li><a class="navlink" href="#access" data-nav="access">접근성 설정</a></li>
+   </ul>
+  </nav>
+ </div>
+</header>
+<main id="main" tabindex="-1"><noscript><div class="card" style="margin-top:1.5rem"><h1>이 화면에서는 MathAble이 작동하지 않아요</h1><p>카카오톡이나 파일 미리보기에서는 버튼과 그래프가 움직이지 않아요.</p><p>받은 <strong>링크</strong>를 Safari에서 열어 주세요. 카카오톡에서는 링크를 연 뒤 오른쪽 아래 공유 버튼을 누르고 ‘Safari로 열기’를 고르면 돼요.</p></div></noscript><div id="view"></div></main>
+<div id="announcer" class="sr-only" aria-live="polite"></div>
+<div id="speakpill" class="speakpill" hidden><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span>읽는 중</span><button type="button" class="btn sm" id="pill-stop">멈추기</button></div>
+
+<dialog id="fdlg" aria-labelledby="fd-title">
+ <div class="handle" aria-hidden="true"></div><div class="dlg-in">
+  <h2 id="fd-title">수식 크게 보기</h2>
+  <div class="fd-mathwrap"><div id="fd-math" aria-hidden="true"></div></div>
+  <div class="btnrow">
+   <button type="button" class="btn" id="fd-smaller"><span aria-hidden="true">－</span> 작게</button>
+   <button type="button" class="btn" id="fd-bigger"><span aria-hidden="true">＋</span> 크게</button>
+   <button type="button" class="btn" id="fd-speak"><span aria-hidden="true">🔊</span> 읽어 주기</button>
+  </div>
+  <h3>읽는 방법</h3>
+  <p id="fd-say"></p>
+  <div id="fd-parts-wrap"><h3>한 부분씩 살펴보기</h3><ol id="fd-parts"></ol></div>
+  <div class="btnrow"><button type="button" class="btn primary block" id="fd-close">닫기</button></div>
+ </div>
+</dialog>
+
+<script>
+(function(){
+'use strict';
+var R=String.raw;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let UID=0; const nid=p=>p+'-'+(++UID);
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const ar=s=>`<span aria-hidden="true">${s}</span>`;
+const view=$('#view');
+
+/* ===================== 저장 ===================== */
+const KEY='mathable-v1';
+const prefersDark=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
+const DEF={scale:1.3,contrast:false,theme:prefersDark?'dark':'light',rate:1,autoSpeak:false,btn:'large',gw:1.3,engine:'auto',cvoice:'buttery',dvoice:''};
+let S=null;
+try{S=JSON.parse(localStorage.getItem(KEY));}catch(e){S=null;}
+if(!S||typeof S!=='object')S={};
+S={settings:Object.assign({},DEF,S.settings||{}),progress:S.progress||{},results:S.results||{},last:S.last||null};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* ===================== 숫자 ===================== */
+function rnd(n,d=3){const p=Math.pow(10,d);let r=Math.round(n*p)/p;if(Math.abs(r)<1e-12)r=0;return r;}
+function fmt(n,d=3){return String(rnd(n,d)).replace('-','−');}
+function sayN(n,d=3){const r=rnd(n,d);return (r<0?'마이너스 ':'')+String(Math.abs(r));}
+function par(n){return n<0?`(${fmt(n)})`:fmt(n);}
+function nice(r){const p=Math.pow(10,Math.floor(Math.log10(r)));const n=r/p;return (n<1.5?1:n<3.5?2:n<7.5?5:10)*p;}
+function parseNum(s){s=String(s).trim().replace(/−/g,'-').replace(/\s/g,'').replace(',','.');if(!s)return null;
+ const fr=s.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);if(fr){const b=+fr[2];return b===0?null:(+fr[1])/b;}
+ const v=Number(s);return isFinite(v)?v:null;}
+
+/* ===================== 음성 ===================== */
+/* 1순위: Claude의 자연스러운 AI 목소리(tts 기능, 지원되는 브라우저에서만)
+   2순위: 기기에 내장된 한국어 목소리(고품질 목소리를 먼저 고름) */
+const canDevice='speechSynthesis' in window;
+let CT=null,ctReady=false,ctDenied=false,devRun=0;
+const CVOICES=[['buttery','부드러운'],['airy','가벼운'],['glassy','맑은'],['rounded','차분한']];
+function koVoices(){if(!canDevice)return [];try{return speechSynthesis.getVoices().filter(v=>/^ko/i.test(v.lang));}catch(e){return [];}}
+const isHQ=v=>/premium|enhanced|고품질|향상|natural|neural|online/i.test(v.name+' '+v.voiceURI);
+function bestDevice(){const vs=koVoices();if(S.settings.dvoice){const v=vs.find(x=>x.voiceURI===S.settings.dvoice);if(v)return v;}return vs.slice().sort((a,b)=>(isHQ(b)?1:0)-(isHQ(a)?1:0))[0]||null;}
+if(canDevice){try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>refreshVoiceUI();}catch(e){}}
+function ttsClean(t){return String(t)
+ .replace(/f′/g,'f 프라임 ').replace(/′/g,' 프라임 ').replace(/²/g,' 제곱').replace(/³/g,' 세제곱')
+ .replace(/Δ/g,'델타 ').replace(/√/g,'루트 ').replace(/≈/g,' 약 ').replace(/ − /g,' 빼기 ').replace(/−/g,'마이너스 ')
+ .replace(/ \+ /g,' 더하기 ').replace(/÷/g,' 나누기 ').replace(/×/g,' 곱하기 ').replace(/ = /g,' 는 ')
+ .replace(/→/g,', ').replace(/[↗↘★✓✗●■◆◀▶▲▼🔊🎵💡📖📈🧭✏️⚙️]/gu,' ').replace(/\s+/g,' ').trim();}
+function groupText(t,max){
+ const sents=t.match(/[^.!?]+[.!?]*\s*/g)||[t];const out=[];let cur='';
+ sents.forEach(x=>{if(cur&&(cur+x).length>max){out.push(cur.trim());cur='';}cur+=x;});
+ if(cur.trim())out.push(cur.trim());
+ const res=[];out.forEach(x=>{while(x.length>1800){res.push(x.slice(0,1800));x=x.slice(1800);}if(x)res.push(x);});
+ return res;
+}
+function setSpeaking(on){const p=document.getElementById('speakpill');if(p)p.hidden=!on;}
+function engine(){if(S.settings.engine==='device')return 'device';if(CT)return 'ai';if(ctDenied)return 'off';return 'device';}
+function speak(text){
+ const clean=ttsClean(text);if(!clean)return;
+ const e=engine();
+ if(e==='off'){announce('읽어 주기가 꺼져 있어요. 이 페이지의 권한 메뉴에서 다시 켜거나, 접근성 설정에서 기기 목소리를 고를 수 있어요.',false);return;}
+ if(e==='ai'){
+  devRun++;try{if(canDevice)speechSynthesis.cancel();}catch(_){}
+  const lines=groupText(clean,500).slice(0,100).map(t=>({text:t}));
+  setSpeaking(true);
+  CT.speak(lines,{voice:S.settings.cvoice,rate:S.settings.rate,language:'ko'}).catch(err=>{
+   const c=err&&err.code;
+   if(c==='not_granted'){ctDenied=true;CT=null;setSpeaking(false);refreshVoiceUI();announce('AI 목소리 읽기가 꺼져 있어요.',false);}
+   else if(c==='unavailable'||c==='upstream_error'||c==='rate_limited'){deviceSpeak(clean);}
+   else if(c==='no_gesture'||c==='busy'){setSpeaking(false);}
+  });
+  return;
+ }
+ deviceSpeak(clean);
+}
+function deviceSpeak(clean){
+ if(!canDevice){announce('이 브라우저는 읽어 주기를 지원하지 않아요. VoiceOver를 사용해 주세요.',false);return;}
+ const run=++devRun;try{speechSynthesis.cancel();}catch(e){}
+ const v=bestDevice(),parts=groupText(clean,160);let left=parts.length;setSpeaking(true);
+ parts.forEach(p=>{const u=new SpeechSynthesisUtterance(p);u.lang='ko-KR';if(v)u.voice=v;u.rate=clamp(S.settings.rate*0.95,0.5,2);u.pitch=1;
+  u.onend=u.onerror=()=>{if(run===devRun&&--left<=0)setSpeaking(false);};
+  try{speechSynthesis.speak(u);}catch(e){}});
+}
+function stopSpeak(){devRun++;if(CT){try{const q=CT.stop();if(q&&q.catch)q.catch(()=>{});}catch(e){}}if(canDevice){try{speechSynthesis.cancel();}catch(e){}}setSpeaking(false);}
+async function initCT(){
+ for(let i=0;i<25&&!(window.claude&&typeof window.claude.use==='function');i++)await new Promise(r=>setTimeout(r,120));
+ if(window.claude&&typeof window.claude.use==='function'){
+  try{const t=await window.claude.use('tts');
+   if(t){CT=t;
+    t.onState(e=>{setSpeaking(e.state!=='idle');
+     if(e.state==='idle'&&e.reason==='not_granted'){ctDenied=true;CT=null;refreshVoiceUI();}
+     else if(e.state==='idle'&&e.reason==='unavailable'){CT=null;refreshVoiceUI();}});
+    try{const q=t.setRate&&t.setRate(S.settings.rate);if(q&&q.catch)q.catch(()=>{});}catch(e){}}
+  }catch(e){}
+ }
+ ctReady=true;refreshVoiceUI();
+}
+function refreshVoiceUI(){const el=document.getElementById('voice-sec');if(el)el.innerHTML=voiceSecHTML();}
+function speakable(el){
+ const c=el.cloneNode(true);
+ $$('.no-speak,script,style',c).forEach(n=>n.remove());
+ $$('details',c).forEach(d=>{if(!d.hasAttribute('open'))Array.from(d.children).forEach(ch=>{if(ch.tagName!=='SUMMARY')ch.remove();});});
+ $$('.mi,.formula',c).forEach(n=>n.replaceWith(document.createTextNode(' '+(n.getAttribute('aria-label')||'').replace(/^수식, /,'')+'. ')));
+ $$('[aria-hidden="true"]',c).forEach(n=>n.remove());
+ $$('p,li,h1,h2,h3,h4,dt,dd,td,th,caption,summary',c).forEach(n=>n.append(document.createTextNode('. ')));
+ return c.textContent.replace(/\s+/g,' ').replace(/(\.\s*){2,}/g,'. ').trim();
+}
+function announce(msg,speakToo=true){const a=$('#announcer');a.textContent='';setTimeout(()=>{a.textContent=msg;},60);if(speakToo&&S.settings.autoSpeak)speak(msg);}
+
+/* ===================== 소리(그래프 소리) ===================== */
+let AC=null,sweepNodes=[];
+function ac(){try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();}if(AC.state==='suspended')AC.resume();return AC;}catch(e){return null;}}
+function yFreq(y,v){const t=clamp((y-v.ymin)/(v.ymax-v.ymin),0,1);return 220*Math.pow(2,2.5*(isFinite(t)?t:0));}
+function outNode(c,pan){const g=c.createGain();if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=clamp(pan||0,-1,1);g.connect(p);p.connect(c.destination);}else g.connect(c.destination);return g;}
+function tone(freq,t0,dur,type,vol,pan){const c=ac();if(!c)return null;const o=c.createOscillator(),g=outNode(c,pan);o.type=type||'sine';o.frequency.value=freq;g.gain.setValueAtTime(0.0001,t0);g.gain.linearRampToValueAtTime(vol||0.2,t0+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);o.connect(g);o.start(t0);o.stop(t0+dur+0.03);return o;}
+function pointTone(y,v,x){const c=ac();if(!c)return;const inR=y>=v.ymin&&y<=v.ymax;const pan=((x-v.xmin)/(v.xmax-v.xmin))*2-1;tone(inR?yFreq(y,v):110,c.currentTime+0.01,0.2,inR?'sine':'square',0.18,pan);}
+function stopSweep(){sweepNodes.forEach(n=>{try{n.stop();}catch(e){}});sweepNodes=[];}
+function sweep(f,v,marks){
+ const c=ac();if(!c){announce('이 기기에서는 소리 기능을 쓸 수 없어요.');return;}
+ stopSweep();const T=c.currentTime+0.2,D=4,N=160;
+ const o=c.createOscillator();o.type='sine';const g=c.createGain();let pn=null;
+ if(c.createStereoPanner){pn=c.createStereoPanner();g.connect(pn);pn.connect(c.destination);}else g.connect(c.destination);
+ o.connect(g);g.gain.setValueAtTime(0,c.currentTime);
+ for(let i=0;i<=N;i++){const t=T+D*i/N,x=v.xmin+(v.xmax-v.xmin)*i/N,y=f(x),inR=isFinite(y)&&y>=v.ymin&&y<=v.ymax;
+  if(i===0){o.frequency.setValueAtTime(yFreq(y,v),t);g.gain.setValueAtTime(inR?0.15:0,t);if(pn)pn.pan.setValueAtTime(-1,t);}
+  else{o.frequency.linearRampToValueAtTime(yFreq(y,v),t);g.gain.linearRampToValueAtTime(inR?0.15:0,t);if(pn)pn.pan.linearRampToValueAtTime(-1+2*i/N,t);}}
+ g.gain.linearRampToValueAtTime(0,T+D+0.05);o.start(T);o.stop(T+D+0.1);
+ const extra=[];
+ (marks||[]).forEach(mk=>{if(mk.x<v.xmin||mk.x>v.xmax)return;const r=(mk.x-v.xmin)/(v.xmax-v.xmin),t=T+D*r,pan=-1+2*r;
+  if(mk.kind==='ext'){extra.push(tone(1568,t,0.12,'triangle',0.3,pan),tone(1568,t+0.15,0.12,'triangle',0.3,pan));}
+  else extra.push(tone(900,t,0.06,'square',0.12,pan));});
+ sweepNodes=[o].concat(extra.filter(Boolean));
+}
+
+/* ===================== 수식 ===================== */
+let FORMULAS=[];
+function m(tex,say){return `<span class="mi" role="img" aria-label="${esc(say)}">\\(${esc(tex)}\\)</span>`;}
+function M(tex,say,parts){const i=FORMULAS.push({tex,say,parts:parts||[]})-1;
+ return `<div class="fwrap"><button type="button" class="formula" data-fid="${i}" aria-label="${esc('수식, '+say)}"><span aria-hidden="true">\\[${esc(tex)}\\]</span><span class="fhint" aria-hidden="true">🔍 누르면 크게 보고 한 부분씩 읽을 수 있어요</span></button></div>`;}
+let mjChain=Promise.resolve();
+function typeset(el){if(!window.__mj||!el)return;mjChain=mjChain.then(()=>MathJax.typesetPromise([el])).catch(()=>{});return mjChain;}
+document.addEventListener('mj-ready',()=>typeset(view));
+
+/* ===================== 그래프 ===================== */
+function marker(sh,x,y,r,hollow){const c=hollow?'g-pth':'g-pt';
+ if(sh==='square')return `<rect class="${c}" x="${x-r}" y="${y-r}" width="${2*r}" height="${2*r}"/>`;
+ if(sh==='diamond'){const q=r*1.35;return `<polygon class="${c}" points="${x},${y-q} ${x+q},${y} ${x},${y+q} ${x-q},${y}"/>`;}
+ return `<circle class="${c}" cx="${x}" cy="${y}" r="${r}"/>`;}
+function sample(k){
+ if(['func','sec','tan','guide'].includes(k))return `<svg viewBox="0 0 64 20" aria-hidden="true" focusable="false"><line class="g-${k}" x1="3" y1="10" x2="61" y2="10"/></svg>`;
+ const sh={ptc:'circle',pts:'square',ptd:'diamond',pth:'circle'}[k];
+ return `<svg viewBox="0 0 64 20" aria-hidden="true" focusable="false">${marker(sh,32,10,7,k==='pth')}</svg>`;}
+
+class Graph{
+ constructor(host,o){
+  this.o=o;this.f=o.f;this.W=640;this.H=o.H||480;this.v=Object.assign({},o.view);this.v0=Object.assign({},o.view);this.id=nid('g');this.grid=true;
+  host.innerHTML=`<svg class="gsvg" viewBox="0 0 ${this.W} ${this.H}" role="img" tabindex="0" aria-labelledby="${this.id}-t ${this.id}-d"><title id="${this.id}-t">${esc(o.title)}</title><desc id="${this.id}-d"></desc><defs><clipPath id="${this.id}-c"><rect x="0" y="0" width="${this.W}" height="${this.H}"/></clipPath></defs><g class="gl"></g></svg>`;
+  this.svg=$('svg',host);this.layer=$('.gl',host);this.descEl=$('desc',host);
+  if(o.onPick){this.svg.style.cursor='crosshair';this.svg.addEventListener('click',e=>{const r=this.svg.getBoundingClientRect();if(!r.width)return;o.onPick(this.ix((e.clientX-r.left)/r.width*this.W));});}
+  if(o.onKey){this.svg.addEventListener('keydown',e=>{if(o.onKey(e.key))e.preventDefault();});}
+ }
+ X(x){const v=this.v;return (x-v.xmin)/(v.xmax-v.xmin)*this.W;}
+ Y(y){const v=this.v;return this.H-(y-v.ymin)/(v.ymax-v.ymin)*this.H;}
+ ix(px){const v=this.v;return v.xmin+px/this.W*(v.xmax-v.xmin);}
+ center(){const v=this.v;return [(v.xmin+v.xmax)/2,(v.ymin+v.ymax)/2];}
+ zoom(k,c){const v=this.v;let [cx,cy]=c&&isFinite(c[1])?c:this.center();const rx=(v.xmax-v.xmin)*k,ry=(v.ymax-v.ymin)*k;if(rx<0.3||ry<0.3||rx>500||ry>500)return false;this.v={xmin:cx-rx/2,xmax:cx+rx/2,ymin:cy-ry/2,ymax:cy+ry/2};return true;}
+ pan(fx,fy){const v=this.v,dx=(v.xmax-v.xmin)*fx,dy=(v.ymax-v.ymin)*fy;this.v={xmin:v.xmin+dx,xmax:v.xmax+dx,ymin:v.ymin+dy,ymax:v.ymax+dy};}
+ reset(){this.v=Object.assign({},this.v0);}
+ ensure(x,y){const v=this.v,rx=v.xmax-v.xmin,ry=v.ymax-v.ymin,mx=rx*0.06,my=ry*0.08;let dx=0,dy=0;
+  if(x<v.xmin+mx)dx=x-(v.xmin+mx);else if(x>v.xmax-mx)dx=x-(v.xmax-mx);
+  if(isFinite(y)){if(y<v.ymin+my)dy=y-(v.ymin+my);else if(y>v.ymax-my)dy=y-(v.ymax-my);}
+  if(dx||dy)this.v={xmin:v.xmin+dx,xmax:v.xmax+dx,ymin:v.ymin+dy,ymax:v.ymax+dy};}
+ rangeText(){const v=this.v;return `보이는 범위는 x가 ${sayN(v.xmin,1)}부터 ${sayN(v.xmax,1)}까지, y가 ${sayN(v.ymin,1)}부터 ${sayN(v.ymax,1)}까지예요.`;}
+ rangeVis(){const v=this.v;return `x: ${fmt(v.xmin,1)} ~ ${fmt(v.xmax,1)}, y: ${fmt(v.ymin,1)} ~ ${fmt(v.ymax,1)}`;}
+ draw(ov,desc){
+  ov=ov||[];const v=this.v,W=this.W,H=this.H,X=x=>this.X(x),Y=y=>this.Y(y);
+  const sc=clamp(S.settings.scale,1,1.7),fs=+(17*sc).toFixed(1),gw=S.settings.gw;
+  const sx=nice((v.xmax-v.xmin)/(9/sc)),sy=nice((v.ymax-v.ymin)/(8/sc));
+  let s='';
+  const xs=[],ys=[];for(let k=Math.ceil(v.xmin/sx);k*sx<=v.xmax+1e-9;k++)xs.push(k*sx);for(let k=Math.ceil(v.ymin/sy);k*sy<=v.ymax+1e-9;k++)ys.push(k*sy);
+  if(this.grid){xs.forEach(x=>{s+=`<line class="g-grid" x1="${X(x)}" y1="0" x2="${X(x)}" y2="${H}"/>`;});ys.forEach(y=>{s+=`<line class="g-grid" x1="0" y1="${Y(y)}" x2="${W}" y2="${Y(y)}"/>`;});}
+  const y0=clamp(Y(0),1.5,H-1.5),x0=clamp(X(0),1.5,W-1.5);
+  s+=`<line class="g-axis" x1="0" y1="${y0}" x2="${W}" y2="${y0}" stroke-width="2.6"/><line class="g-axis" x1="${x0}" y1="0" x2="${x0}" y2="${H}" stroke-width="2.6"/>`;
+  s+=`<polygon class="g-axfill" points="${W},${y0} ${W-16},${y0-8} ${W-16},${y0+8}"/><polygon class="g-axfill" points="${x0},0 ${x0-8},16 ${x0+8},16"/>`;
+  const below=y0<H-fs*1.7,ly=below?y0+fs*1.2:y0-fs*0.6,left=x0>fs*2.6;
+  xs.forEach(x=>{if(Math.abs(x)<1e-9)return;const px=X(x);if(px<fs*0.8||px>W-fs*1.6)return;s+=`<line class="g-axis" x1="${px}" y1="${y0-6}" x2="${px}" y2="${y0+6}" stroke-width="2"/><text class="g-tick" x="${px}" y="${ly}" text-anchor="middle" font-size="${fs}">${fmt(x,2)}</text>`;});
+  ys.forEach(y=>{if(Math.abs(y)<1e-9)return;const py=Y(y);if(py<fs*1.6||py>H-fs*0.6)return;s+=`<line class="g-axis" x1="${x0-6}" y1="${py}" x2="${x0+6}" y2="${py}" stroke-width="2"/><text class="g-tick" x="${left?x0-10:x0+10}" y="${py+fs*0.35}" text-anchor="${left?'end':'start'}" font-size="${fs}">${fmt(y,2)}</text>`;});
+  if(v.xmin<0&&v.xmax>0&&v.ymin<0&&v.ymax>0)s+=`<text class="g-tick" x="${x0-8}" y="${y0+fs*1.1}" text-anchor="end" font-size="${fs}">O</text>`;
+  s+=`<text class="g-lab" x="${W-6}" y="${y0-12}" text-anchor="end" font-size="${fs*1.1}">x</text><text class="g-lab" x="${x0+14}" y="${fs*1.3}" font-size="${fs*1.1}">y</text>`;
+  s+=`<g clip-path="url(#${this.id}-c)">`;
+  // 보조 요소
+  ov.forEach(it=>{
+   if(it.t==='vline')s+=`<line class="g-guide" x1="${X(it.x)}" y1="0" x2="${X(it.x)}" y2="${H}" stroke-width="${2.2*gw}"/>`;
+   else if(it.t==='seg')s+=`<line class="g-${it.c||'guide'}" x1="${X(it.a[0])}" y1="${Y(it.a[1])}" x2="${X(it.b[0])}" y2="${Y(it.b[1])}" stroke-width="${(it.c&&it.c!=='guide'?3.6:2.6)*gw}"/>`;
+  });
+  // 함수
+  if(this.f){let d='',pen=false;const N=500,ry=v.ymax-v.ymin;for(let i=0;i<=N;i++){const x=v.xmin+(v.xmax-v.xmin)*i/N,y=this.f(x);if(!isFinite(y)||y>v.ymax+ry*3||y<v.ymin-ry*3){pen=false;continue;}d+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(y).toFixed(1);pen=true;}
+   s+=`<path class="g-func" d="${d}" stroke-width="${4.5*gw}"/>`;}
+  // 직선
+  ov.forEach(it=>{if(it.t==='line'){const [px,py]=it.p;const y1=it.m*(v.xmin-px)+py,y2=it.m*(v.xmax-px)+py;s+=`<line class="g-${it.c}" x1="0" y1="${Y(y1)}" x2="${W}" y2="${Y(y2)}" stroke-width="${3.6*gw}"/>`;}});
+  // 점
+  ov.forEach(it=>{if(it.t==='pt')s+=marker(it.shape,X(it.p[0]),Y(it.p[1]),(it.r||9)*Math.sqrt(gw),it.hollow);});
+  s+='</g>';
+  // 글자
+  const est=t=>String(t).length*fs*0.58;
+  const put=(tx,ty,anchor,txt,size)=>{size=size||fs;const w=est(txt)*(size/fs);
+   if(anchor==='start'&&tx+w>W-4){tx=W-4;anchor='end';}
+   if(anchor==='end'&&tx-w<4){tx=4;anchor='start';}
+   if(anchor==='middle'){tx=clamp(tx,w/2+4,W-w/2-4);}
+   ty=clamp(ty,size+2,H-6);
+   s+=`<text class="g-lab" x="${tx}" y="${ty}" text-anchor="${anchor}" font-size="${size}">${esc(txt)}</text>`;};
+  const D={ne:[1,-1,'start'],nw:[-1,-1,'end'],se:[1,1,'start'],sw:[-1,1,'end'],n:[0,-1,'middle'],s:[0,1,'middle'],e:[1,0,'start'],w:[-1,0,'end']};
+  ov.forEach(it=>{
+   if(it.t==='pt'&&it.label){const d=D[it.pos||'ne'],off=(it.r||9)*Math.sqrt(gw)+7,px=X(it.p[0]),py=Y(it.p[1]);
+    if(px<-20||px>W+20||py<-20||py>H+20)return;
+    put(px+d[0]*off,py+d[1]*off+(d[1]>0?fs*0.8:d[1]===0?fs*0.35:-2),d[2],it.label);}
+   else if(it.t==='text'){put(X(it.p[0])+(it.dx||0)*sc,Y(it.p[1])+(it.dy||0)*sc,it.anchor||'middle',it.s);}
+   else if(it.t==='band'){const a=Math.max(it.x1,v.xmin),b=Math.min(it.x2,v.xmax);if(b-a<(v.xmax-v.xmin)*0.08)return;put((X(a)+X(b))/2,fs*1.5,'middle',it.s,fs*1.05);}
+  });
+  this.layer.innerHTML=s;this.descEl.textContent=desc||'';
+ }
+}
+
+let ACTIVE=[];
+function row(label,btns){return `<div class="btnrow" role="group" aria-label="${esc(label)}"><span class="grp-lab" aria-hidden="true">${label}</span>${btns.map(b=>`<button type="button" class="btn" data-act="${b[0]}"${b[2]?` aria-label="${esc(b[2])}"`:''}>${b[1]}</button>`).join('')}</div>`;}
+function tog(act,label,val){return `<button type="button" class="btn" data-act="${act}" aria-pressed="${val?'true':'false'}">${label}: <span class="tv">${val?'켜짐':'꺼짐'}</span></button>`;}
+function setTog(b,val){b.setAttribute('aria-pressed',val?'true':'false');const tv=$('.tv',b);if(tv)tv.textContent=val?'켜짐':'꺼짐';}
+
+function graphPanel(host,o){
+ const legend=(o.legend||[]).map(([k,t])=>`<li>${sample(k)}<span>${t}</span></li>`).join('');
+ host.innerHTML=`<div class="gpanel">
+  <div class="gbox no-speak"></div>
+  <div class="readout" aria-hidden="true"></div>
+  <p class="sr-only" role="status"></p>
+  <details class="legend-wrap" open><summary>그래프 기호 설명</summary><ul class="legend">${legend}</ul></details>
+  <div class="gctl no-speak">${o.controls||''}
+   ${row('화면 크기',[['zin',ar('＋')+' 확대'],['zout',ar('－')+' 축소'],['zreset','원래 크기']])}
+   ${o.pan?row('화면 이동',[['pu',ar('↑')+' 위로'],['pd',ar('↓')+' 아래로'],['pl',ar('←')+' 왼쪽으로'],['pr',ar('→')+' 오른쪽으로']]):''}
+  </div></div>`;
+ const g=new Graph($('.gbox',host),o);
+ const ro=$('.readout',host),st=$('[role=status]',host);
+ const H={};
+ const api={g,host,redraw:null,
+  set(vis,spoken,quiet){ro.innerHTML=vis;st.textContent=spoken;if(!quiet&&S.settings.autoSpeak)speak(spoken);},
+  on(act,fn){H[act]=fn;}};
+ host.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&host.contains(b)&&H[b.dataset.act])H[b.dataset.act](b);});
+ const rd=()=>api.redraw&&api.redraw(true);
+ api.zoomIn=()=>{if(g.zoom(0.5,o.focus&&o.focus())){rd();announce('확대했어요. '+g.rangeText());}else announce('더 이상 확대할 수 없어요.');};
+ api.zoomOut=()=>{if(g.zoom(2,o.focus&&o.focus())){rd();announce('축소했어요. '+g.rangeText());}else announce('더 이상 축소할 수 없어요.');};
+ api.on('zin',api.zoomIn);api.on('zout',api.zoomOut);
+ api.on('zreset',()=>{g.reset();rd();announce('원래 크기로 돌아왔어요. '+g.rangeText());});
+ const pan=(fx,fy,w)=>{g.pan(fx,fy);rd();announce(`화면을 ${w}로 옮겼어요. `+g.rangeText());};
+ api.on('pu',()=>pan(0,0.25,'위'));api.on('pd',()=>pan(0,-0.25,'아래'));api.on('pl',()=>pan(-0.25,0,'왼쪽'));api.on('pr',()=>pan(0.25,0,'오른쪽'));
+ ACTIVE.push(api);
+ return api;
+}
+function eqVis(m,n){const mm=rnd(m),nn=rnd(n);if(mm===0)return 'y = '+fmt(nn);let s='y = '+(mm===1?'x':mm===-1?'−x':fmt(mm)+'x');if(nn>0)s+=' + '+fmt(nn);else if(nn<0)s+=' − '+fmt(-nn);return s;}
+function eqSay(m,n){const mm=rnd(m),nn=rnd(n);if(mm===0)return 'y는 '+sayN(nn);let s='y는 '+(mm===1?'x':mm===-1?'마이너스 x':sayN(mm)+' x');if(nn>0)s+=' 더하기 '+sayN(nn);else if(nn<0)s+=' 빼기 '+sayN(-nn);return s;}
+function dirVis(m){return Math.abs(m)<1e-9?'수평인 직선 (기울기 0)':m>0?'오른쪽 위로 올라가는 직선 ↗':'오른쪽 아래로 내려가는 직선 ↘';}
+function dirSay(m){return Math.abs(m)<1e-9?'수평인 직선이에요':m>0?'오른쪽으로 갈수록 올라가는 직선이에요':'오른쪽으로 갈수록 내려가는 직선이에요';}
+
+/* ---------- 레슨 그래프: 평균변화율 ---------- */
+function setupAvg(host){
+ const f=x=>x*x;let a=1,b=3;const LO=-1.5,HI=4;
+ const P=graphPanel(host,{title:'곡선 y = x² 위의 두 점 A, B와 할선',f,view:{xmin:-2,xmax:4.5,ymin:-1.5,ymax:17.5},
+  legend:[['func','실선: 곡선 y = x²'],['sec','긴 점선: 할선 AB (두 점을 잇는 직선)'],['guide','가는 점선: x의 증가량 Δx(가로), y의 증가량 Δy(세로)'],['ptc','동그라미: 점 A'],['pts','네모: 점 B']],
+  controls:row('점 A (동그라미)',[['a-',ar('◀')+' A를 왼쪽으로'],['a+','A를 오른쪽으로 '+ar('▶')]])+row('점 B (네모)',[['b-',ar('◀')+' B를 왼쪽으로'],['b+','B를 오른쪽으로 '+ar('▶')]]),
+  onKey:k=>{if(k==='ArrowLeft'){mv('b',-0.5);return true;}if(k==='ArrowRight'){mv('b',0.5);return true;}return false;}});
+ function upd(quiet){
+  const fa=f(a),fb=f(b),dx=b-a,dy=fb-fa,m=dy/dx,rt=P.g.X(b)<P.g.W-110;
+  const ov=[{t:'seg',a:[a,fa],b:[b,fa]},{t:'seg',a:[b,fa],b:[b,fb]},{t:'line',p:[a,fa],m,c:'sec'},
+   {t:'pt',p:[a,fa],shape:'circle',label:`A(${fmt(a)}, ${fmt(fa)})`,pos:a<b?'nw':'se'},
+   {t:'pt',p:[b,fb],shape:'square',label:`B(${fmt(b)}, ${fmt(fb)})`,pos:a<b?'se':'nw'},
+   {t:'text',p:[(a+b)/2,fa],s:`Δx = ${fmt(dx)}`,dy:dy>=0?-14:30},
+   {t:'text',p:[b,(fa+fb)/2],s:`Δy = ${fmt(dy)}`,dx:rt?14:-14,anchor:rt?'start':'end'}];
+  const vis=`<p class="ro-main">A(${fmt(a)}, ${fmt(fa)}) · B(${fmt(b)}, ${fmt(fb)})</p>
+   <p>x의 증가량 Δx = ${fmt(b)} − ${par(a)} = <b>${fmt(dx)}</b></p>
+   <p>y의 증가량 Δy = ${fmt(fb)} − ${par(fa)} = <b>${fmt(dy)}</b></p>
+   <p>평균변화율 = Δy ÷ Δx = ${fmt(dy)} ÷ ${par(dx)} = <b>${fmt(m)}</b></p>
+   <p>할선 AB: ${dirVis(m)}</p>`;
+  const sp=`점 A는 x ${sayN(a)}, y ${sayN(fa)}. 점 B는 x ${sayN(b)}, y ${sayN(fb)}. x의 증가량은 ${sayN(dx)}, y의 증가량은 ${sayN(dy)}. 평균변화율은 ${sayN(dy)} 나누기 ${sayN(dx)}, 즉 ${sayN(m)}이에요. 할선 AB는 ${dirSay(m)}.`;
+  P.g.draw(ov,'곡선 y는 x 제곱 위의 두 점과 할선. '+sp);P.set(vis,sp,quiet);
+ }
+ function mv(w,d){let na=w==='a'?a:b;na=rnd(na+d);const other=w==='a'?b:a;if(na===other)na=rnd(na+d);
+  if(na<LO||na>HI){announce(`점 ${w==='a'?'A':'B'}를 더 이상 움직일 수 없어요.`);return;}
+  if(w==='a')a=na;else b=na;upd();}
+ P.on('a-',()=>mv('a',-0.5));P.on('a+',()=>mv('a',0.5));P.on('b-',()=>mv('b',-0.5));P.on('b+',()=>mv('b',0.5));
+ P.redraw=upd;upd(true);
+}
+/* ---------- 레슨 그래프: 순간변화율 ---------- */
+function setupInst(host){
+ const f=x=>x*x,Hs=[2,1,0.5,0.25,0.1,0.01,0.001];let i=1,dir=1,showTan=false;
+ const P=graphPanel(host,{title:'점 A(1, 1)과 점 Q를 잇는 할선이 접선에 가까워지는 모습',f,view:{xmin:-1.5,xmax:3.6,ymin:-1,ymax:10.5},
+  legend:[['func','실선: 곡선 y = x²'],['sec','긴 점선: 할선 AQ'],['tan','짧은 점선: 점 A에서의 접선 (기울기 2)'],['ptc','동그라미: 고정된 점 A(1, 1)'],['pts','네모: 움직이는 점 Q']],
+  controls:row('h 바꾸기',[['hdn','h 줄이기 (0에 가깝게)'],['hup','h 늘리기']])+`<div class="btnrow" role="group" aria-label="보기 설정"><span class="grp-lab" aria-hidden="true">보기</span><button type="button" class="btn" data-act="dir">방향 바꾸기</button>${tog('tan','접선',false)}</div>`,
+  onKey:k=>{if(k==='ArrowLeft'){chg(1);return true;}if(k==='ArrowRight'){chg(-1);return true;}return false;}});
+ function upd(quiet){
+  const h=dir*Hs[i],q=1+h,fq=f(q),m=(fq-1)/h,last=i===Hs.length-1,big=Hs[i]>=0.25;
+  const ov=[];if(showTan)ov.push({t:'line',p:[1,1],m:2,c:'tan'});
+  ov.push({t:'line',p:[1,1],m,c:'sec'},{t:'pt',p:[1,1],shape:'circle',label:'A(1, 1)',pos:dir>0?'nw':'se'},{t:'pt',p:[q,fq],shape:'square',r:8,label:big?`Q(${fmt(q,3)}, ${fmt(fq,4)})`:'Q',pos:dir>0?'se':'nw'});
+  const vis=`<p class="ro-main">h = ${fmt(h,4)} <span style="font-size:.75em">(${dir>0?'오른쪽':'왼쪽'}에서 다가가는 중)</span></p>
+   <p>점 Q(${fmt(q,4)}, ${fmt(fq,6)})</p>
+   <p>할선 AQ의 기울기 = (${fmt(fq,6)} − 1) ÷ ${par(rnd(h,4))} = <b>${fmt(m,4)}</b></p>
+   <p>접선의 기울기 2와의 차이: ${fmt(Math.abs(m-2),4)}</p>${last?'<p><b>★ h가 0에 아주 가까워지자 기울기가 2와 거의 같아졌어요. x = 1에서의 순간변화율은 2예요.</b></p>':''}`;
+  const sp=`h는 ${sayN(h,4)}, ${dir>0?'오른쪽':'왼쪽'}에서 다가가는 중이에요. 할선 A Q의 기울기는 ${sayN(m,4)}이고, 접선의 기울기 2와 ${sayN(Math.abs(m-2),4)}만큼 차이 나요.${last?' h가 0에 아주 가까워져서 기울기가 2와 거의 같아졌어요. x가 1일 때 순간변화율은 2예요.':''}`;
+  P.g.draw(ov,'곡선 y는 x 제곱 위의 점 A와 점 Q, 그리고 할선. '+sp);P.set(vis,sp,quiet);
+ }
+ function chg(d){const ni=i+d;if(ni<0){announce('h가 이미 가장 커요.');return;}if(ni>=Hs.length){announce('h가 이미 0.001로 아주 작아요. 기울기는 2에 가까워요.');return;}i=ni;upd();}
+ P.on('hdn',()=>chg(1));P.on('hup',()=>chg(-1));
+ P.on('dir',()=>{dir=-dir;upd();});
+ P.on('tan',b=>{showTan=!showTan;setTog(b,showTan);upd(true);announce(showTan?'점 A에서의 접선을 보여 줘요. 기울기는 2예요.':'접선을 숨겼어요.');});
+ P.redraw=upd;upd(true);
+}
+/* ---------- 레슨 그래프: 미분계수 ---------- */
+function setupDeriv(host){
+ const f=x=>x*x;let a=1,step=0.5;const LO=-3,HI=3;
+ const P=graphPanel(host,{title:'곡선 y = x² 위의 점 P와 접선',f,view:{xmin:-4,xmax:4,ymin:-3,ymax:10.5},
+  legend:[['func','실선: 곡선 y = x²'],['tan','짧은 점선: 점 P에서의 접선'],['ptd','마름모: 점 P']],
+  controls:row('점 P 이동',[['p-',ar('◀')+' 왼쪽으로'],['p+','오른쪽으로 '+ar('▶')],['p0','x = 0으로']])+`<div class="btnrow" role="group" aria-label="이동 간격"><span class="grp-lab" aria-hidden="true">이동 간격</span><button type="button" class="btn" data-act="st" data-v="0.5" aria-pressed="true">0.5씩</button><button type="button" class="btn" data-act="st" data-v="0.1" aria-pressed="false">0.1씩</button></div>`,
+  focus:()=>[a,f(a)],onPick:x=>{a=clamp(rnd(Math.round(x/step)*step),LO,HI);upd();},
+  onKey:k=>{if(k==='ArrowLeft'){mv(-1);return true;}if(k==='ArrowRight'){mv(1);return true;}return false;}});
+ function upd(quiet){
+  const y=f(a),m=2*a,n=-a*a;
+  const ov=[{t:'line',p:[a,y],m,c:'tan'},{t:'pt',p:[a,y],shape:'diamond',r:10,label:`P(${fmt(a)}, ${fmt(y)})`,pos:Math.abs(m)<1e-9?'s':m>0?'nw':'ne'}];
+  const vis=`<p class="ro-main">P(${fmt(a)}, ${fmt(y)})</p><p>미분계수 f′(${fmt(a)}) = 2 × ${par(a)} = <b>${fmt(m)}</b></p><p>접선: ${eqVis(m,n)}</p><p>${dirVis(m)}</p>`;
+  const sp=`점 P는 x ${sayN(a)}, y ${sayN(y)}. 미분계수, 즉 접선의 기울기는 ${sayN(m)}이에요. 접선의 방정식은 ${eqSay(m,n)}. ${dirSay(m)}.`;
+  P.g.draw(ov,'곡선 y는 x 제곱 위의 점 P와 접선. '+sp);P.set(vis,sp,quiet);
+ }
+ function mv(d){const na=rnd(a+d*step);if(na<LO||na>HI){announce('점 P를 더 이상 움직일 수 없어요.');return;}a=na;P.g.ensure(a,f(a));upd();}
+ P.on('p-',()=>mv(-1));P.on('p+',()=>mv(1));P.on('p0',()=>{a=0;upd();});
+ P.on('st',b=>{step=+b.dataset.v;$$('[data-act="st"]',host).forEach(x=>setTog(x,x===b));announce(`이동 간격을 ${step}로 바꿨어요.`);});
+ P.redraw=upd;upd(true);
+}
+/* ---------- 레슨 그래프: 극대와 극소 ---------- */
+function setupExt(host){
+ const f=x=>x*x*x-3*x,df=x=>3*x*x-3;let x=-2;const step=0.25,LO=-2.25,HI=2.25;
+ const P=graphPanel(host,{title:'곡선 y = x³ − 3x 위의 점 P와 접선, 극대점과 극소점',f,view:{xmin:-3,xmax:3,ymin:-5,ymax:5.5},
+  legend:[['func','실선: 곡선 y = x³ − 3x'],['tan','짧은 점선: 점 P에서의 접선'],['ptd','마름모: 점 P'],['pth','속이 빈 동그라미: 극대점 (−1, 2)과 극소점 (1, −2)'],['guide','가는 세로 점선: 증가와 감소가 바뀌는 곳 (x = −1, x = 1)']],
+  controls:row('점 P 이동',[['p-',ar('◀')+' 왼쪽으로'],['p+','오른쪽으로 '+ar('▶')]])+row('바로 가기',[['gmax','극대점으로'],['gmin','극소점으로']]),
+  focus:()=>[x,f(x)],onPick:v=>{x=clamp(rnd(Math.round(v/step)*step),LO,HI);upd();},
+  onKey:k=>{if(k==='ArrowLeft'){mv(-1);return true;}if(k==='ArrowRight'){mv(1);return true;}return false;}});
+ function upd(quiet){
+  const y=f(x),m=df(x),atMax=Math.abs(x+1)<1e-9,atMin=Math.abs(x-1)<1e-9;
+  const ov=[{t:'vline',x:-1},{t:'vline',x:1},{t:'band',x1:-99,x2:-1,s:'증가 ↗'},{t:'band',x1:-1,x2:1,s:'감소 ↘'},{t:'band',x1:1,x2:99,s:'증가 ↗'},{t:'line',p:[x,y],m,c:'tan'},
+   {t:'pt',p:[-1,2],shape:'circle',hollow:true,r:8,label:atMax?'':'극대 (−1, 2)',pos:'n'},{t:'pt',p:[1,-2],shape:'circle',hollow:true,r:8,label:atMin?'':'극소 (1, −2)',pos:'s'},
+   {t:'pt',p:[x,y],shape:'diamond',r:10,label:atMax?'P = 극대 (−1, 2)':atMin?'P = 극소 (1, −2)':`P(${fmt(x)}, ${fmt(y)})`,pos:atMax?'n':atMin?'s':m>0?'nw':'ne'}];
+  let st,stS;
+  if(atMax){st='★ 접선이 수평 → <b>극대</b>! 왼쪽은 증가, 오른쪽은 감소. 극댓값 f(−1) = 2';stS='접선이 수평이에요. 왼쪽에서는 증가하고 오른쪽에서는 감소하니까 여기가 극대예요. 극댓값은 2예요.';}
+  else if(atMin){st='★ 접선이 수평 → <b>극소</b>! 왼쪽은 감소, 오른쪽은 증가. 극솟값 f(1) = −2';stS='접선이 수평이에요. 왼쪽에서는 감소하고 오른쪽에서는 증가하니까 여기가 극소예요. 극솟값은 마이너스 2예요.';}
+  else if(m>0){st='접선의 기울기가 양수(+) → <b>증가</b>하는 중 ↗';stS='접선의 기울기가 양수예요. 함수가 증가하는 중이에요.';}
+  else{st='접선의 기울기가 음수(−) → <b>감소</b>하는 중 ↘';stS='접선의 기울기가 음수예요. 함수가 감소하는 중이에요.';}
+  const vis=`<p class="ro-main">P(${fmt(x)}, ${fmt(y)})</p><p>접선의 기울기 f′(${fmt(x)}) = <b>${fmt(m)}</b></p><p>${st}</p>`;
+  const sp=`점 P는 x ${sayN(x)}, y ${sayN(y)}. 접선의 기울기는 ${sayN(m)}. ${stS}`;
+  P.g.draw(ov,'곡선 y는 x 세제곱 빼기 3x. x가 마이너스 1보다 작을 때 증가, 마이너스 1과 1 사이에서 감소, 1보다 클 때 증가해요. '+sp);P.set(vis,sp,quiet);
+ }
+ function mv(d){const nx=rnd(x+d*step);if(nx<LO||nx>HI){announce('점 P를 더 이상 움직일 수 없어요.');return;}x=nx;upd();}
+ P.on('p-',()=>mv(-1));P.on('p+',()=>mv(1));P.on('gmax',()=>{x=-1;upd();});P.on('gmin',()=>{x=1;upd();});
+ P.redraw=upd;upd(true);
+}
+
+/* ===================== 문제 ===================== */
+function mountQ(host,q,opts){
+ opts=opts||{};const id=nid('q');let hintN=0;
+ const body=q.type==='mc'
+  ?`<fieldset class="choices"><legend>보기에서 하나를 고르세요</legend>${q.choices.map((c,i)=>`<label class="opt"><input type="radio" name="${id}" value="${i}"><span>${c.t}</span></label>`).join('')}</fieldset>`
+  :`<label class="numlab" for="${id}-in">답 입력</label><input id="${id}-in" class="numin" type="text" inputmode="decimal" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="${id}-help"><p id="${id}-help" class="help">숫자로 입력해요. 음수는 -2처럼, 분수는 3/2처럼 쓸 수 있어요.</p>`;
+ host.innerHTML=`<div class="qbox">
+  <div class="qprompt">${q.prompt}</div>${body}
+  <div class="btnrow no-speak"><button type="button" class="btn primary" data-q="check">정답 확인</button><button type="button" class="btn weak" data-q="hint">${ar('💡')} 힌트 보기 (${q.hints.length}개)</button><button type="button" class="btn weak" data-q="expl" hidden>${ar('📖')} 해설 보기</button></div>
+  <ol class="hints" aria-label="힌트"></ol>
+  <div class="fb" role="status"></div>
+  <section class="expl" hidden aria-label="해설"><h4>해설</h4>${q.expl()}<p><a class="btn weak" href="#learn-${q.lesson}-2">개념 복습: ${LESSONS[q.lesson].title} 다시 보기</a></p></section>
+ </div>`;
+ const fb=$('.fb',host),ex=$('.expl',host),exBtn=$('[data-q=expl]',host),hb=$('[data-q=hint]',host),hl=$('.hints',host);
+ typeset(host);
+ const showExpl=()=>{ex.hidden=false;exBtn.hidden=false;exBtn.textContent='해설 숨기기';typeset(ex);};
+ if(q.type==='num'){const inp=$('.numin',host);inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check();}});}
+ function setFb(cls,html){fb.className='fb '+cls;fb.innerHTML=html;typeset(fb);if(S.settings.autoSpeak)setTimeout(()=>speak(speakable(fb)),50);}
+ function check(){
+  let ok,msg='';
+  if(q.type==='mc'){const sel=$('input:checked',host);if(!sel){setFb('info','<p>먼저 보기 중 하나를 골라 주세요.</p>');return;}const c=q.choices[+sel.value];ok=!!c.ok;msg=c.fb||'';}
+  else{const val=parseNum($('.numin',host).value);if(val===null){setFb('info','<p>숫자를 입력해 주세요.</p>');return;}ok=Math.abs(val-q.answer)<1e-6;if(!ok)msg=(q.wrong&&q.wrong[String(rnd(val))])||'한 번 더 계산해 보세요. 힌트를 보면 도움이 돼요.';}
+  const first=!(q.id in S.results);
+  if(first)S.results[q.id]={first:ok,solved:ok};else if(ok)S.results[q.id].solved=true;save();
+  if(ok){setFb('ok',`<p class="fb-title"><span class="ic-c" aria-hidden="true">✓</span>정답이에요!</p>${q.okMsg?`<p>${q.okMsg}</p>`:''}<p>아래 해설로 풀이 과정을 확인해 보세요.</p>`);showExpl();}
+  else{setFb('no',`<p class="fb-title"><span class="ic-c" aria-hidden="true">!</span>아직 아니에요. 다시 생각해 봐요.</p><p>${msg}</p>`);exBtn.hidden=false;}
+  if(opts.onResult)opts.onResult(ok);
+ }
+ host.addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;const a=b.dataset.q;
+  if(a==='check')check();
+  else if(a==='hint'){if(hintN<q.hints.length){const li=document.createElement('li');li.innerHTML=q.hints[hintN++];hl.append(li);typeset(li);announce('힌트 '+hintN+'. '+li.textContent,true);}
+   if(hintN>=q.hints.length){hb.disabled=true;hb.textContent='힌트를 모두 봤어요';}else hb.innerHTML=`${ar('💡')} 힌트 더 보기 (${hintN}/${q.hints.length})`;}
+  else if(a==='expl'){if(ex.hidden)showExpl();else{ex.hidden=true;exBtn.textContent='해설 보기';}}});
+}
+
+/* ===================== 콘텐츠 ===================== */
+const STEP_NAMES=['쉬운 설명','수학적 정의','그래프로 보기','수식과 계산','예제','이해도 확인'];
+const det=(sum,html)=>`<details class="sol"><summary>${sum}</summary><div class="sol-body">${html}</div></details>`;
+const key=(tag,html)=>`<p class="key"><span class="tag">${tag}</span> ${html}</p>`;
+function incTable(cap,rows){return `<table class="dtable"><caption>${cap}</caption><thead><tr><th scope="col">x의 범위</th><th scope="col">f′(x)의 부호</th><th scope="col">f(x)의 변화</th></tr></thead><tbody>${rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table>`;}
+const qStep=id=>({html:()=>`<p>배운 내용을 확인해 봐요. 답을 고르거나 입력한 뒤 ‘정답 확인’을 누르세요. 막히면 힌트를 보세요.</p><div class="q-host"></div><div class="done-msg" role="status"></div>`,
+ setup:b=>mountQ($('.q-host',b),LC[id],{onResult:ok=>{if(ok){markDone(id);$('.done-msg',b).innerHTML=`${ar('✓ ')}‘${LESSONS[id].title}’ 학습을 완료했어요! <a href="#toc">학습 목차에서 확인하기</a>`;}}})});
+
+const LESSONS={
+avg:{id:'avg',unit:'UNIT 01. 미분의 기초',title:'평균변화율',goal:'두 점 사이의 기울기를 이해해요',prev:null,next:'inst',steps:[
+{html:()=>`<p class="lead">평균변화율은 <strong>어떤 구간 전체에서, 평균적으로 얼마나 빠르게 변했는지</strong>를 나타내는 수예요.</p>
+<div class="box"><h3>생활 속 예: 버스 여행</h3><p>버스를 타고 2시간 동안 100 km를 갔어요.</p><p>중간에 빨리 달리기도 하고 신호에 멈추기도 했지만, 전체를 평균 내면 <strong>1시간에 50 km씩</strong> 간 셈이에요.</p><p>계산: 100 ÷ 2 = 50. 이 50이 바로 평균변화율이에요.</p></div>
+<h3>꼭 구분할 두 단어</h3>
+<dl class="terms"><dt>변화량</dt><dd>얼마나 변했는지. 예: 거리가 100 km 늘었다.</dd><dt>변화율</dt><dd>한쪽이 변한 양을 다른 쪽이 변한 양으로 나눈 값. 즉 얼마나 빠르게 변했는지. 예: 1시간에 50 km.</dd></dl>
+${key('핵심','평균변화율 = (y가 변한 양) ÷ (x가 변한 양)')}`},
+{html:()=>`<p>함수 ${m('y=f(x)','y는 f x')}에서 x의 값이 ${m('a','a')}에서 ${m('b','b')}까지 변한다고 해요.</p>
+<h3>① x의 증가량</h3>${M(R`\Delta x = b - a`,'델타 x는 b 빼기 a',['Δ(델타)는 “변한 양”을 뜻하는 기호예요.','Δx는 x가 변한 양, 즉 x의 증가량이에요.','b − a: 나중 값에서 처음 값을 빼요.'])}
+<h3>② y의 증가량</h3>${M(R`\Delta y = f(b) - f(a)`,'델타 y는 f b 빼기 f a',['f(b): x가 b일 때의 y값','f(a): x가 a일 때의 y값','둘을 빼면 y가 변한 양이 돼요.'])}
+<h3>③ 평균변화율</h3>${M(R`\frac{\Delta y}{\Delta x} = \frac{f(b)-f(a)}{b-a}`,'델타 x 분의 델타 y는, b 빼기 a 분의 f b 빼기 f a',['분수의 위쪽(분자): f(b) − f(a), y의 증가량','분수의 아래쪽(분모): b − a, x의 증가량','분수 전체: y의 증가량을 x의 증가량으로 나눈 값'])}
+${key('핵심','평균변화율은 두 점 (a, f(a))와 (b, f(b))를 잇는 직선의 기울기와 같아요.')}`},
+{html:()=>`<p>곡선 y = x² 위에 두 점 A와 B가 있어요. 아래 버튼으로 두 점을 움직여 보세요.</p><p>두 점을 잇는 직선을 <strong>할선</strong>이라고 해요. <strong>할선의 기울기 = 평균변화율</strong>이에요.</p>
+<div class="graph-host"></div>
+<div class="box try"><h3>해 보기</h3><ol><li>A를 1, B를 3에 두면 평균변화율은 얼마인가요?</li><li>B를 A 쪽으로 가까이 옮겨 보세요. 할선은 어떻게 바뀌나요?</li><li>A와 B를 모두 음수 쪽으로 옮기면 기울기의 부호는 어떻게 되나요?</li></ol></div>`,setup:b=>setupAvg($('.graph-host',b))},
+{html:()=>`<p>함수 ${m('f(x)=x^2','f x는 x 제곱')}에서 x가 1에서 3까지 변할 때의 평균변화율을 구해 봐요.</p>
+<ol class="calc"><li><h3>x의 증가량</h3>${M(R`\Delta x = 3 - 1 = 2`,'델타 x는 3 빼기 1, 2')}</li>
+<li><h3>y의 증가량</h3><p>f(3) = 9, f(1) = 1이므로</p>${M(R`\Delta y = f(3)-f(1) = 9 - 1 = 8`,'델타 y는 f 3 빼기 f 1, 9 빼기 1, 8')}</li>
+<li><h3>나누기</h3>${M(R`\frac{\Delta y}{\Delta x} = \frac{8}{2} = 4`,'델타 x 분의 델타 y는 2분의 8, 4')}</li></ol>
+${key('결과','평균변화율은 4. x가 1만큼 늘 때마다 y는 평균 4만큼 늘었다는 뜻이에요.')}`},
+{html:()=>`<div class="box"><h3>예제 1</h3><p>함수 ${m('f(x)=x^2-2x','f x는 x 제곱 빼기 2x')}에서 x의 값이 0에서 3까지 변할 때의 평균변화율을 구하세요.</p>
+${det('풀이 보기',`<p>f(3) = 9 − 6 = 3, f(0) = 0</p>${M(R`\frac{f(3)-f(0)}{3-0}=\frac{3-0}{3}=1`,'3 빼기 0 분의 f 3 빼기 f 0은, 3분의 3, 1')}<p><strong>답: 1</strong></p>`)}</div>
+<div class="box"><h3>예제 2: 평균 속도</h3><p>물체가 출발하고 t초 뒤의 위치가 ${m('s(t)=t^2+t','s t는 t 제곱 더하기 t')} 미터예요. 1초에서 2초 사이의 평균 속도는?</p>
+${det('풀이 보기',`<p>s(2) = 4 + 2 = 6, s(1) = 1 + 1 = 2</p>${M(R`\frac{s(2)-s(1)}{2-1}=\frac{6-2}{1}=4`,'2 빼기 1 분의 s 2 빼기 s 1은, 1분의 6 빼기 2, 4')}<p><strong>답: 초속 4 m.</strong> 평균 속도도 평균변화율이에요.</p>`)}</div>`},
+qStep('avg')]},
+
+inst:{id:'inst',unit:'UNIT 01. 미분의 기초',title:'순간변화율',goal:'한 점에서의 변화 정도를 이해해요',prev:'avg',next:'deriv',steps:[
+{html:()=>`<p class="lead">순간변화율은 <strong>바로 그 한 순간</strong>에 얼마나 빠르게 변하고 있는지를 나타내요.</p>
+<div class="box"><h3>생활 속 예: 자동차 속도계</h3><p>2시간 동안의 평균 속도가 시속 50 km여도, 어느 순간 속도계는 시속 80 km를 가리킬 수 있어요.</p><p>속도계의 숫자가 그 순간의 빠르기, 즉 순간변화율이에요.</p></div>
+<h3>어떻게 구할까?</h3><p>‘한 순간’은 시간이 흐르지 않아서 바로 나눌 수가 없어요. 그래서 이렇게 생각해요.</p>
+<ol><li>1초 동안의 평균 속도를 구해요.</li><li>0.1초, 0.01초… 구간을 점점 짧게 해요.</li><li>평균 속도가 어떤 값에 가까워지는지 봐요. 그 값이 순간 속도예요.</li></ol>
+${key('핵심','순간변화율 = 구간을 한없이 짧게 줄일 때 평균변화율이 가까워지는 값')}`},
+{html:()=>`<p>x = a에서 x가 Δx만큼 변하면, 그 구간의 평균변화율은</p>
+${M(R`\frac{f(a+\Delta x)-f(a)}{\Delta x}`,'델타 x 분의 f a 더하기 델타 x 빼기 f a',['분자: x가 a에서 a + Δx로 갈 때 y가 변한 양','분모: x가 변한 양 Δx'])}
+<p>여기서 Δx를 0에 한없이 가깝게 할 때의 값이 <strong>x = a에서의 순간변화율</strong>이에요.</p>
+${M(R`\lim_{\Delta x \to 0} \frac{f(a+\Delta x)-f(a)}{\Delta x}`,'델타 x가 0으로 갈 때, 델타 x 분의 f a 더하기 델타 x 빼기 f a 의 극한',['lim은 극한을 뜻하고 “리미트”라고 읽어요.','Δx → 0은 “Δx가 0에 한없이 가까워질 때”라는 뜻이에요.','분수 부분은 아주 짧은 구간에서의 평균변화율이에요.'])}
+<div class="box"><h3>알아 두기</h3><ul><li>교과서에 따라 Δx 대신 <strong>h</strong>를 쓰기도 해요. 뜻은 같아요.</li><li>Δx = 0을 바로 넣으면 분모가 0이 되어 계산할 수 없어요. 그래서 “0에 한없이 가까워질 때”를 생각해요.</li></ul></div>`},
+{html:()=>`<p>곡선 y = x² 위의 점 A(1, 1)을 고정하고, 다른 점 Q를 A에서 h만큼 떨어진 곳에 두었어요.</p><p>‘h 줄이기’를 누를 때마다 Q가 A에 가까워져요. 할선 AQ의 기울기가 어떤 값에 가까워지는지 확인해 보세요.</p>
+<div class="graph-host"></div>
+<div class="tscroll"><table class="dtable"><caption>오른쪽에서 가까워질 때 (h가 양수)</caption><thead><tr><th scope="col">h</th><th scope="col">할선 AQ의 기울기</th></tr></thead><tbody><tr><td>1</td><td>3</td></tr><tr><td>0.5</td><td>2.5</td></tr><tr><td>0.1</td><td>2.1</td></tr><tr><td>0.01</td><td>2.01</td></tr><tr><td>0.001</td><td>2.001</td></tr></tbody></table></div>
+<div class="tscroll"><table class="dtable"><caption>왼쪽에서 가까워질 때 (h가 음수)</caption><thead><tr><th scope="col">h</th><th scope="col">할선 AQ의 기울기</th></tr></thead><tbody><tr><td>−1</td><td>1</td></tr><tr><td>−0.5</td><td>1.5</td></tr><tr><td>−0.1</td><td>1.9</td></tr><tr><td>−0.01</td><td>1.99</td></tr><tr><td>−0.001</td><td>1.999</td></tr></tbody></table></div>
+${key('결론','양쪽 어느 방향에서 다가가도 기울기는 2에 가까워져요. 그래서 x = 1에서의 순간변화율은 2예요. 이때 할선은 점 A에서의 <strong>접선</strong>에 가까워져요.')}`,setup:b=>setupInst($('.graph-host',b))},
+{html:()=>`<p>${m('f(x)=x^2','f x는 x 제곱')}의 x = 1에서의 순간변화율을 계산해 봐요.</p>
+<ol class="calc"><li><h3>평균변화율 식 세우기</h3>${M(R`\frac{f(1+h)-f(1)}{h} = \frac{(1+h)^2 - 1}{h}`,'h 분의 f 1 더하기 h 빼기 f 1은, h 분의 1 더하기 h의 제곱 빼기 1')}</li>
+<li><h3>분자 전개하기</h3>${M(R`= \frac{1 + 2h + h^2 - 1}{h} = \frac{2h + h^2}{h}`,'h 분의 1 더하기 2h 더하기 h 제곱 빼기 1, 즉 h 분의 2h 더하기 h 제곱')}</li>
+<li><h3>h로 약분하기</h3><p>h는 0이 아니므로 나눌 수 있어요.</p>${M(R`= 2 + h`,'2 더하기 h')}</li>
+<li><h3>h를 0에 가깝게</h3>${M(R`\lim_{h\to 0}(2+h) = 2`,'h가 0으로 갈 때 2 더하기 h의 극한은 2')}</li></ol>
+${key('결과','x = 1에서의 순간변화율은 2. 그래프 단계의 표와 같은 값이에요.')}`},
+{html:()=>`<div class="box"><h3>예제: 떨어지는 공</h3><p>공을 떨어뜨리고 t초 뒤 떨어진 거리는 ${m('s(t)=5t^2','s t는 5 t 제곱')} 미터예요. 2초일 때 공의 순간 속도는?</p>
+${det('풀이 보기',`${M(R`\frac{s(2+h)-s(2)}{h}=\frac{5(2+h)^2-20}{h}`,'h 분의 s 2 더하기 h 빼기 s 2는, h 분의 5 곱하기 2 더하기 h의 제곱 빼기 20')}${M(R`=\frac{20h+5h^2}{h}=20+5h`,'h 분의 20h 더하기 5h 제곱, 즉 20 더하기 5h')}${M(R`\lim_{h\to0}(20+5h)=20`,'h가 0으로 갈 때 20 더하기 5h의 극한은 20')}<p><strong>답: 초속 20 m.</strong> 순간 속도는 위치의 순간변화율이에요.</p>`)}</div>`},
+qStep('inst')]},
+
+deriv:{id:'deriv',unit:'UNIT 01. 미분의 기초',title:'미분계수',goal:'극한과 접선의 기울기를 연결해요',prev:'inst',next:'ext',steps:[
+{html:()=>`<p class="lead">순간변화율을 수학에서는 <strong>미분계수</strong>라고 불러요.</p>
+<p>x = a에서의 미분계수는 ${m("f'(a)",'f 프라임 a')}로 쓰고 “에프 프라임 에이”라고 읽어요.</p>
+<div class="box"><h3>그래프에서는?</h3><p>미분계수는 그 점에서 곡선에 그은 <strong>접선의 기울기</strong>예요.</p><p>접선은 곡선과 한 점에서 스치듯 만나는 직선이에요. 그 점 근처에서는 곡선과 같은 방향으로 나아가요.</p></div>
+${key('핵심','순간변화율 = 미분계수 f′(a) = 접선의 기울기')}`},
+{html:()=>`${M(R`f'(a)=\lim_{\Delta x\to 0}\frac{f(a+\Delta x)-f(a)}{\Delta x}`,'f 프라임 a는, 델타 x가 0으로 갈 때, 델타 x 분의 f a 더하기 델타 x 빼기 f a 의 극한',['f′(a): x = a에서의 미분계수','lim(Δx → 0): Δx를 0에 한없이 가깝게 할 때','분수: 할선의 기울기(평균변화율)'])}
+<p>x = a + Δx로 놓으면 이렇게 쓸 수도 있어요.</p>
+${M(R`f'(a)=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}`,'f 프라임 a는, x가 a로 갈 때, x 빼기 a 분의 f x 빼기 f a 의 극한',['x → a: x가 a에 한없이 가까워질 때','분수: 두 점 (a, f(a))와 (x, f(x))를 잇는 할선의 기울기'])}
+<div class="box"><h3>기하적 의미</h3><ul><li>분수 부분은 두 점을 잇는 할선의 기울기예요.</li><li>극한을 취하면 할선이 접선이 되고, 기울기는 접선의 기울기가 돼요.</li><li>이 극한값이 있으면 “x = a에서 <strong>미분가능</strong>하다”고 해요.</li></ul></div>`},
+{html:()=>`<p>곡선 y = x² 위의 점 P를 움직이면서 접선의 기울기, 즉 미분계수가 어떻게 바뀌는지 확인해 보세요. 그래프를 직접 눌러도 P가 그 위치로 이동해요.</p>
+<div class="graph-host"></div>
+<div class="box try"><h3>관찰해 보기</h3><ul><li>P가 왼쪽(x가 음수)에 있을 때 접선은 오른쪽 아래로 내려가요. 미분계수는 음수예요.</li><li>P가 x = 0에 있을 때 접선은 수평이에요. 미분계수는 0이에요.</li><li>P가 오른쪽으로 갈수록 접선이 가팔라져요. 미분계수가 커져요.</li></ul></div>`,setup:b=>setupDeriv($('.graph-host',b))},
+{html:()=>`<p>${m('f(x)=x^2','f x는 x 제곱')}의 x = a에서의 미분계수를 구해 봐요.</p>
+<ol class="calc"><li>${M(R`f'(a)=\lim_{h\to0}\frac{(a+h)^2-a^2}{h}`,'f 프라임 a는, h가 0으로 갈 때, h 분의 a 더하기 h의 제곱 빼기 a 제곱 의 극한')}</li>
+<li>${M(R`=\lim_{h\to0}\frac{2ah+h^2}{h}=\lim_{h\to0}(2a+h)`,'h 분의 2ah 더하기 h 제곱 의 극한, 즉 2a 더하기 h 의 극한')}</li>
+<li>${M(R`=2a`,'2a')}</li></ol>
+<p>그래서 ${m("f'(2)=4",'f 프라임 2는 4')}, ${m("f'(-1)=-2",'f 프라임 마이너스 1은 마이너스 2')}예요.</p>
+<div class="box"><h3>더 나아가기: 접선의 방정식</h3><p>점 (2, 4)에서 기울기가 4인 접선은</p>${M(R`y-4=4(x-2)\;\Rightarrow\; y=4x-4`,'y 빼기 4는 4 곱하기 x 빼기 2, 정리하면 y는 4x 빼기 4')}<p>접선의 방정식은 UNIT 02에서 자세히 배워요.</p></div>`},
+{html:()=>`<div class="box"><h3>예제</h3><p>${m('f(x)=x^3','f x는 x 세제곱')}일 때 ${m("f'(1)",'f 프라임 1')}을 구하세요.</p>
+${det('풀이 보기',`${M(R`f'(1)=\lim_{h\to0}\frac{(1+h)^3-1}{h}`,'f 프라임 1은, h가 0으로 갈 때, h 분의 1 더하기 h의 세제곱 빼기 1 의 극한')}<p>(1 + h)³ = 1 + 3h + 3h² + h³ 이므로</p>${M(R`=\lim_{h\to0}\frac{3h+3h^2+h^3}{h}=\lim_{h\to0}(3+3h+h^2)=3`,'h 분의 3h 더하기 3h 제곱 더하기 h 세제곱 의 극한, 즉 3 더하기 3h 더하기 h 제곱 의 극한은 3')}<p><strong>답: 3.</strong> 점 (1, 1)에서 접선의 기울기가 3이에요.</p>`)}</div>`},
+qStep('deriv')]},
+
+ext:{id:'ext',unit:'UNIT 02. 도함수의 활용',title:'극대와 극소',goal:'극값의 정의와 찾는 방법을 이해해요',prev:'deriv',next:null,steps:[
+{html:()=>`<p class="lead">극대와 극소는 <strong>그 근처에서 가장 높은 곳과 가장 낮은 곳</strong>이에요.</p>
+<div class="box"><h3>생활 속 예: 산길 걷기</h3><ul><li>오르막을 오르다가 꼭대기에서 내리막으로 바뀌어요. 그 꼭대기가 <strong>극대</strong>예요.</li><li>내리막을 내려가다가 골짜기 바닥에서 오르막으로 바뀌어요. 그 바닥이 <strong>극소</strong>예요.</li></ul></div>
+<p>주의: 극대는 “근처에서” 가장 높은 곳이에요. 산 전체에서 가장 높은 곳(최댓값)과는 다를 수 있어요.</p>
+${key('핵심','증가 → 감소로 바뀌는 곳이 극대, 감소 → 증가로 바뀌는 곳이 극소')}`},
+{html:()=>`<h3>정의</h3><p>x = a를 포함하는 어떤 열린구간의 모든 x에 대하여</p>
+${M(R`f(x)\le f(a)`,'f x는 f a보다 작거나 같다')}<p>이면 f(x)는 x = a에서 <strong>극대</strong>, f(a)를 <strong>극댓값</strong>이라고 해요.</p>
+${M(R`f(x)\ge f(a)`,'f x는 f a보다 크거나 같다')}<p>이면 x = a에서 <strong>극소</strong>, f(a)를 <strong>극솟값</strong>이라고 해요. 극댓값과 극솟값을 합쳐 <strong>극값</strong>이라고 해요.</p>
+<h3>도함수로 찾는 방법</h3>
+<div class="box"><ul><li>f′(x)의 부호가 양수(+)에서 음수(−)로 바뀌면 → <strong>극대</strong></li><li>f′(x)의 부호가 음수(−)에서 양수(+)로 바뀌면 → <strong>극소</strong></li><li>미분가능한 함수가 x = a에서 극값을 가지면 f′(a) = 0이에요. 즉, 접선이 수평이에요.</li></ul></div>
+<p class="warn-note"><span class="tag">주의</span> f′(a) = 0이라고 항상 극값은 아니에요. 예: y = x³은 x = 0에서 f′(0) = 0이지만, 양쪽 모두 증가해서 극값이 없어요.</p>`},
+{html:()=>`<p>곡선 y = x³ − 3x 위의 점 P를 움직여 보세요. 접선의 기울기 부호가 어떻게 바뀌는지, 어디에서 접선이 수평이 되는지 확인해요.</p><div class="graph-host"></div>
+<div class="box try"><h3>해 보기</h3><ol><li>P를 왼쪽 끝에서 오른쪽으로 한 칸씩 옮기며 ‘증가’와 ‘감소’ 안내를 들어 보세요.</li><li>접선이 수평이 되는 두 곳은 어디인가요?</li></ol></div>`,setup:b=>setupExt($('.graph-host',b))},
+{html:()=>`<p>${m('f(x)=x^3-3x','f x는 x 세제곱 빼기 3x')}의 극값을 구해 봐요.</p>
+<p class="note">다항함수의 도함수 공식 ${m("(x^n)'=nx^{n-1}",'x의 n제곱을 미분하면 n 곱하기 x의 n 빼기 1 제곱')}을 사용해요. 도함수 단원에서 자세히 배워요.</p>
+<ol class="calc"><li><h3>도함수 구하기</h3>${M(R`f'(x)=3x^2-3=3(x+1)(x-1)`,'f 프라임 x는 3x 제곱 빼기 3, 인수분해하면 3 곱하기 x 더하기 1 곱하기 x 빼기 1')}</li>
+<li><h3>f′(x) = 0인 x 찾기</h3>${M(R`x=-1 \quad \text{또는} \quad x=1`,'x는 마이너스 1 또는 1')}</li>
+<li><h3>증감표 만들기</h3><p class="note">교과서의 가로 증감표를 확대해서 보기 쉽게 세로로 바꾸었어요.</p>${incTable('f(x) = x³ − 3x의 증감표',[['x < −1','+ (양수)','증가 ↗'],['x = −1','0','극대 (극댓값 2)'],['−1 < x < 1','− (음수)','감소 ↘'],['x = 1','0','극소 (극솟값 −2)'],['x > 1','+ (양수)','증가 ↗']])}</li>
+<li><h3>극값 계산</h3>${M(R`f(-1)=-1+3=2,\qquad f(1)=1-3=-2`,'f 마이너스 1은 마이너스 1 더하기 3, 2. f 1은 1 빼기 3, 마이너스 2')}</li></ol>
+${key('결과','x = −1에서 극댓값 2, x = 1에서 극솟값 −2')}`},
+{html:()=>`<div class="box"><h3>예제</h3><p>함수 ${m('f(x)=x^3-6x^2+9x','f x는 x 세제곱 빼기 6x 제곱 더하기 9x')}의 극댓값과 극솟값을 구하세요.</p>
+${det('풀이 보기',`${M(R`f'(x)=3x^2-12x+9=3(x-1)(x-3)`,'f 프라임 x는 3x 제곱 빼기 12x 더하기 9, 인수분해하면 3 곱하기 x 빼기 1 곱하기 x 빼기 3')}<p>f′(x) = 0 → x = 1 또는 x = 3</p>${incTable('f(x) = x³ − 6x² + 9x의 증감표',[['x < 1','+ (양수)','증가 ↗'],['x = 1','0','극대'],['1 < x < 3','− (음수)','감소 ↘'],['x = 3','0','극소'],['x > 3','+ (양수)','증가 ↗']])}<p>f(1) = 1 − 6 + 9 = 4, f(3) = 27 − 54 + 27 = 0</p><p><strong>답: x = 1에서 극댓값 4, x = 3에서 극솟값 0</strong></p><p><a href="#explore">그래프 탐색</a>에서 이 함수를 골라 직접 확인해 볼 수 있어요.</p>`)}</div>`},
+qStep('ext')]}
+};
+const ORDER=['avg','inst','deriv','ext'];
+
+const LC={
+avg:{id:'lc-avg',lesson:'avg',type:'mc',prompt:`함수 ${m('f(x)=2x+1','f x는 2x 더하기 1')}에서 x의 값이 1에서 4까지 변할 때, 평균변화율은?`,
+ choices:[{t:'2',ok:true},{t:'6',fb:'6은 y의 증가량(9 − 3)이에요. x의 증가량 3으로 나눠야 해요.'},{t:'3',fb:'3은 x의 증가량(4 − 1)이에요. y의 증가량도 구해 보세요.'},{t:'9',fb:'9는 f(4), 즉 x = 4일 때의 함수값이에요.'}],
+ hints:['f(1) = 3, f(4) = 9예요.','(y의 증가량) ÷ (x의 증가량) = (9 − 3) ÷ (4 − 1)'],
+ expl:()=>`${M(R`\frac{f(4)-f(1)}{4-1}=\frac{9-3}{3}=2`,'4 빼기 1 분의 f 4 빼기 f 1은, 3분의 9 빼기 3, 2')}<p>직선 y = 2x + 1은 어느 구간에서 재도 평균변화율이 기울기 2와 같아요.</p>`},
+inst:{id:'lc-inst',lesson:'inst',type:'mc',prompt:`함수 ${m('f(x)=x^2','f x는 x 제곱')}의 x = 3에서의 순간변화율은?`,
+ choices:[{t:'6',ok:true},{t:'9',fb:'9는 f(3), 즉 x = 3일 때의 함수값이에요. 순간변화율은 높이가 아니라 기울기예요.'},{t:'3',fb:'3은 x의 값이에요. 극한을 계산해 보세요.'},{t:'계산할 수 없다',fb:'h = 0을 바로 넣으면 분모가 0이 되지만, 먼저 약분하면 구할 수 있어요.'}],
+ hints:[`${m(R`\frac{(3+h)^2-9}{h}`,'h 분의 3 더하기 h의 제곱 빼기 9')}를 전개해 보세요.`,'(3 + h)² − 9 = 6h + h²예요. h로 나누면 6 + h.'],
+ expl:()=>`${M(R`\lim_{h\to0}\frac{(3+h)^2-9}{h}=\lim_{h\to0}\frac{6h+h^2}{h}=\lim_{h\to0}(6+h)=6`,'h가 0으로 갈 때, h 분의 3 더하기 h의 제곱 빼기 9의 극한은, 6 더하기 h의 극한, 6')}`},
+deriv:{id:'lc-deriv',lesson:'deriv',type:'mc',prompt:`곡선 y = f(x) 위의 점 (a, f(a))에서, 미분계수 ${m("f'(a)",'f 프라임 a')}가 뜻하는 것은?`,
+ choices:[{t:'그 점에서 그은 접선의 기울기',ok:true},{t:'그 점의 높이, 즉 함수값 f(a)',fb:'함수값 f(a)는 점의 y좌표예요. 미분계수는 그 점에서 얼마나 가파른지를 나타내요.'},{t:'두 점을 잇는 할선의 기울기',fb:'할선의 기울기는 평균변화율이에요. 미분계수는 할선 기울기의 극한, 즉 접선의 기울기예요.'},{t:'그래프가 x축과 만나는 점',fb:'x축과 만나는 점은 f(x) = 0인 곳이에요. 미분계수와는 관계가 없어요.'}],
+ hints:['그래프 단계에서 P를 움직일 때 무엇이 바뀌었는지 떠올려 보세요.','순간변화율 = 미분계수였어요. 그래프에서 순간변화율은?'],
+ expl:()=>`<p>미분계수 f′(a)는 할선 기울기의 극한이고, 그래프에서는 점 (a, f(a))에서 그은 <strong>접선의 기울기</strong>예요.</p>`},
+ext:{id:'lc-ext',lesson:'ext',type:'mc',prompt:`f′(x)의 부호가 x = 2의 왼쪽에서는 음수(−), 오른쪽에서는 양수(+)예요. x = 2에서 f(x)는?`,
+ choices:[{t:'극소',ok:true},{t:'극대',fb:'극대는 양수(+)에서 음수(−)로 바뀔 때예요. 여기서는 반대예요.'},{t:'극값이 없다',fb:'부호가 바뀌었으니 극값이 있어요. 부호가 바뀌지 않을 때 극값이 없어요.'},{t:'알 수 없다',fb:'도함수 부호의 변화만으로 판단할 수 있어요.'}],
+ hints:['f′(x)가 음수이면 함수는 감소, 양수이면 증가해요.','감소하다가 증가로 바뀌면… 골짜기 바닥!'],
+ expl:()=>`<p>왼쪽에서 감소(↘), 오른쪽에서 증가(↗)하므로 x = 2는 골짜기 바닥, 즉 <strong>극소</strong>예요.</p>`}
+};
+
+const QUIZ=[
+{id:'q1',lesson:'avg',type:'mc',prompt:`함수 ${m('f(x)=x^2','f x는 x 제곱')}에서 x의 값이 1에서 2까지 변할 때, 평균변화율은?`,
+ choices:[{t:'3',ok:true},{t:'4',fb:'4는 f(2), 즉 x = 2일 때의 함수값이에요. 평균변화율은 y의 증가량을 x의 증가량으로 나눈 값이에요.'},{t:'1',fb:'1은 x의 증가량(2 − 1)이에요. y의 증가량도 구해서 나눠 보세요.'},{t:'2',fb:'2는 x = 1에서의 순간변화율(미분계수)이에요. 이 문제는 두 점 사이의 평균을 묻고 있어요.'}],
+ hints:['먼저 x의 증가량을 구해요: 2 − 1 = 1','f(2) = 4, f(1) = 1이에요. y의 증가량은 4 − 1이에요.'],
+ expl:()=>M(R`\frac{f(2)-f(1)}{2-1}=\frac{4-1}{1}=3`,'2 빼기 1 분의 f 2 빼기 f 1은, 1분의 4 빼기 1, 3')},
+{id:'q2',lesson:'avg',type:'num',prompt:`함수 ${m('f(x)=x^3','f x는 x 세제곱')}에서 x의 값이 0에서 2까지 변할 때, 평균변화율을 구하세요.`,answer:4,
+ wrong:{'8':'8은 y의 증가량(f(2) − f(0))이에요. x의 증가량 2로 나눠야 해요.','2':'2는 x의 증가량이에요. y의 증가량을 구해 나눠 보세요.','12':'12는 x = 2에서의 미분계수 f′(2)예요. 평균변화율은 두 점을 잇는 직선의 기울기예요.'},
+ hints:['f(2)와 f(0)을 먼저 구해 보세요.','f(2) = 8, f(0) = 0이에요. 이제 (8 − 0) ÷ (2 − 0)을 계산해요.'],
+ expl:()=>M(R`\frac{f(2)-f(0)}{2-0}=\frac{8-0}{2}=4`,'2 빼기 0 분의 f 2 빼기 f 0은, 2분의 8, 4')},
+{id:'q3',lesson:'inst',type:'mc',prompt:`${m(R`\lim_{h\to 0}\frac{(1+h)^2-1}{h}`,'h가 0으로 갈 때, h 분의 1 더하기 h의 제곱 빼기 1 의 극한')}을 구할 때, 가장 먼저 해야 할 일은?`,
+ choices:[{t:'분자를 전개해서 정리한 뒤 h로 약분한다',ok:true},{t:'h에 0을 바로 대입한다',fb:'h = 0을 바로 넣으면 분모가 0이 되어 계산할 수 없어요. 먼저 약분해서 분모의 h를 없애야 해요.'},{t:'분모와 분자에 각각 1을 더한다',fb:'분모와 분자에 같은 수를 더하면 분수의 값이 달라져요.'},{t:'답은 항상 0이라고 쓴다',fb:'분자와 분모가 모두 0에 가까워져도, 그 비율은 0이 아닐 수 있어요.'}],
+ hints:['h = 0을 넣으면 분모가 어떻게 되나요?','(1 + h)² − 1 = 2h + h²로 바꾼 뒤 생각해 보세요.'],
+ expl:()=>`${M(R`\frac{(1+h)^2-1}{h}=\frac{2h+h^2}{h}=2+h`,'h 분의 1 더하기 h의 제곱 빼기 1은, h 분의 2h 더하기 h 제곱, 즉 2 더하기 h')}<p>약분한 뒤 h → 0이면 값은 2예요.</p>`},
+{id:'q4',lesson:'inst',type:'num',prompt:`함수 ${m('f(x)=x^2+x','f x는 x 제곱 더하기 x')}의 x = 1에서의 순간변화율을 구하세요.`,answer:3,
+ wrong:{'2':'2는 f(1), 즉 x = 1일 때의 함수값이에요. 순간변화율은 기울기예요.','1':'x 부분의 기울기 1만 계산했어요. x² 부분도 함께 계산해 보세요.'},
+ hints:['f(1 + h) − f(1)을 전개해 보세요. f(1) = 2예요.','(1 + h)² + (1 + h) − 2 = 3h + h²예요. 이걸 h로 나눠요.'],
+ expl:()=>M(R`\lim_{h\to0}\frac{(1+h)^2+(1+h)-2}{h}=\lim_{h\to0}\frac{3h+h^2}{h}=\lim_{h\to0}(3+h)=3`,'h가 0으로 갈 때, h 분의 3h 더하기 h 제곱 의 극한은, 3 더하기 h의 극한, 3')},
+{id:'q5',lesson:'deriv',type:'mc',prompt:`곡선 ${m('y=x^2','y는 x 제곱')} 위의 점 (−1, 1)에서 그은 접선에 대한 설명으로 옳은 것은?`,
+ choices:[{t:'기울기가 −2이고, 오른쪽으로 갈수록 내려가는 직선',ok:true},{t:'기울기가 2이고, 오른쪽으로 갈수록 올라가는 직선',fb:'f′(a) = 2a에 a = −1을 넣어 보세요. 부호에 주의!'},{t:'기울기가 0인 수평선',fb:'접선이 수평인 곳은 꼭짓점 (0, 0)이에요.'},{t:'기울기가 1인 직선',fb:'1은 이 점의 y좌표(함수값)예요.'}],
+ hints:['y = x²에서 미분계수는 f′(a) = 2a였어요.','a = −1을 넣으면 2 × (−1) = ?'],
+ expl:()=>`<p>f′(−1) = 2 × (−1) = −2. 기울기가 음수이므로 오른쪽으로 갈수록 내려가는 직선이에요. ‘미분계수’ 3단계 그래프에서 P를 −1로 옮겨 확인해 보세요.</p>`},
+{id:'q6',lesson:'deriv',type:'num',prompt:`함수 ${m('f(x)=2x^2','f x는 2 x 제곱')}에 대하여 ${m("f'(3)",'f 프라임 3')}의 값을 구하세요.`,answer:12,
+ wrong:{'18':'18은 f(3), 즉 함수값이에요. 미분계수는 기울기예요.','6':'6은 y = x²의 x = 3에서의 미분계수예요. 앞의 2를 곱했는지 확인해 보세요.'},
+ hints:[`${m(R`\lim_{h\to0}\frac{2(3+h)^2-18}{h}`,'h가 0으로 갈 때, h 분의 2 곱하기 3 더하기 h의 제곱 빼기 18 의 극한')}으로 시작해요.`,'2(3 + h)² − 18 = 12h + 2h²예요.'],
+ expl:()=>M(R`f'(3)=\lim_{h\to0}\frac{12h+2h^2}{h}=\lim_{h\to0}(12+2h)=12`,'f 프라임 3은, h 분의 12h 더하기 2h 제곱 의 극한, 즉 12 더하기 2h의 극한, 12')},
+{id:'q7',lesson:'ext',type:'mc',prompt:`함수 ${m('f(x)=x^3-3x','f x는 x 세제곱 빼기 3x')}의 극댓값은?`,
+ choices:[{t:'2',ok:true},{t:'−1',fb:'−1은 극대가 되는 x의 값이에요. 극댓값은 그때의 함수값 f(−1)이에요.'},{t:'−2',fb:'−2는 극솟값이에요 (x = 1일 때).'},{t:'0',fb:'f(0) = 0이지만 x = 0에서는 f′(0) = −3이라 감소하는 중이에요. 극값이 아니에요.'}],
+ hints:['f′(x) = 3x² − 3 = 0인 x를 찾아요.','x = −1에서 f′의 부호가 + → − 로 바뀌어요. f(−1)을 계산해요.'],
+ expl:()=>`${M(R`f(-1)=(-1)^3-3(-1)=-1+3=2`,'f 마이너스 1은 마이너스 1의 세제곱 빼기 3 곱하기 마이너스 1, 즉 마이너스 1 더하기 3, 2')}<p>x = −1에서 극대, 극댓값은 2예요.</p>`},
+{id:'q8',lesson:'ext',type:'mc',prompt:'다음 문장은 참일까요, 거짓일까요? “f′(a) = 0이면 함수 f(x)는 x = a에서 반드시 극값을 갖는다.”',
+ choices:[{t:'거짓',ok:true},{t:'참',fb:'f(x) = x³을 생각해 보세요. f′(0) = 0이지만 x = 0의 왼쪽과 오른쪽 모두에서 증가해요.'}],
+ hints:['극값이 되려면 f′(x)의 부호가 바뀌어야 해요.','그래프 탐색에서 y = x³을 골라 x = 0 근처를 살펴보세요.'],
+ expl:()=>`<p>f′(a) = 0은 극값의 <strong>필요조건</strong>일 뿐이에요. f(x) = x³은 f′(0) = 0이지만 f′(x) = 3x²이 0의 양쪽에서 모두 양수라서 계속 증가해요. 그래서 극값이 없어요.</p>`}
+];
+
+const FUNCS=[
+{id:'sq',vis:'y = x²',say:'y는 x의 제곱',f:x=>x*x,df:x=>2*x,view:{xmin:-5,xmax:5,ymin:-3,ymax:12},start:1,
+ specials:[{x:0,kind:'ext',label:'극소점 (0, 0)',say:'극소점, 원점',note:'극소점이에요. 왼쪽은 감소, 오른쪽은 증가. 극솟값 0',noteSay:'여기는 극소점이에요. 왼쪽에서는 감소하고 오른쪽에서는 증가해요. 극솟값은 0이에요.'}],
+ feats:['x = 0에서 가장 낮은 점 (0, 0)이 있어요. 이 점이 극소점이고, 극솟값은 0이에요.','x가 0보다 작을 때는 감소하고, 0보다 클 때는 증가해요.','원점 (0, 0)에서 x축, y축과 만나요.','y축을 기준으로 왼쪽과 오른쪽이 같은 모양(대칭)이에요.','극댓값은 없어요.']},
+{id:'cap',vis:'y = −x² + 4',say:'y는 마이너스 x 제곱 더하기 4',f:x=>-x*x+4,df:x=>-2*x,view:{xmin:-5,xmax:5,ymin:-6,ymax:6},start:-1,
+ specials:[{x:-2,kind:'zero',label:'x절편 (−2, 0)',say:'x절편, 마이너스 2',note:'x축과 만나는 점이에요.',noteSay:'여기서 그래프가 x축과 만나요.'},{x:0,kind:'ext',label:'극대점 (0, 4)',say:'극대점, 0 4',note:'극대점이에요. 왼쪽은 증가, 오른쪽은 감소. 극댓값 4',noteSay:'여기는 극대점이에요. 왼쪽에서는 증가하고 오른쪽에서는 감소해요. 극댓값은 4예요.'},{x:2,kind:'zero',label:'x절편 (2, 0)',say:'x절편, 2',note:'x축과 만나는 점이에요.',noteSay:'여기서 그래프가 x축과 만나요.'}],
+ feats:['x = 0에서 가장 높은 점 (0, 4)가 있어요. 이 점이 극대점이고, 극댓값은 4예요.','x가 0보다 작을 때는 증가하고, 0보다 클 때는 감소해요.','x = −2와 x = 2에서 x축과 만나요.','y축과는 (0, 4)에서 만나요.','극솟값은 없어요.']},
+{id:'cub',vis:'y = x³ − 3x',say:'y는 x 세제곱 빼기 3x',f:x=>x*x*x-3*x,df:x=>3*x*x-3,view:{xmin:-4,xmax:4,ymin:-5,ymax:5},start:-2,
+ specials:[{x:-Math.sqrt(3),kind:'zero',label:'x절편 (−√3, 0)',say:'x절편, 마이너스 루트 3',note:'x축과 만나는 점. x = −√3 ≈ −1.73',noteSay:'여기서 그래프가 x축과 만나요. x는 마이너스 루트 3, 약 마이너스 1.73이에요.'},
+  {x:-1,kind:'ext',label:'극대점 (−1, 2)',say:'극대점, 마이너스 1 2',note:'극대점이에요. 왼쪽은 증가, 오른쪽은 감소. 극댓값 2',noteSay:'여기는 극대점이에요. 왼쪽에서는 증가하고 오른쪽에서는 감소해요. 극댓값은 2예요.'},
+  {x:0,kind:'zero',label:'원점 (0, 0)',say:'원점',note:'원점을 지나요. 이곳에서는 감소하는 중이에요.',noteSay:'그래프가 원점을 지나요. 이곳에서는 감소하는 중이에요.'},
+  {x:1,kind:'ext',label:'극소점 (1, −2)',say:'극소점, 1 마이너스 2',note:'극소점이에요. 왼쪽은 감소, 오른쪽은 증가. 극솟값 −2',noteSay:'여기는 극소점이에요. 왼쪽에서는 감소하고 오른쪽에서는 증가해요. 극솟값은 마이너스 2예요.'},
+  {x:Math.sqrt(3),kind:'zero',label:'x절편 (√3, 0)',say:'x절편, 루트 3',note:'x축과 만나는 점. x = √3 ≈ 1.73',noteSay:'여기서 그래프가 x축과 만나요. x는 루트 3, 약 1.73이에요.'}],
+ feats:['x = −1에서 극대, 극댓값은 2예요.','x = 1에서 극소, 극솟값은 −2예요.','x가 −1보다 작을 때 증가, −1과 1 사이에서 감소, 1보다 클 때 다시 증가해요.','x축과는 x = −√3, 0, √3 세 곳에서 만나요.','원점을 기준으로 돌려도 같은 모양(원점 대칭)이에요.']},
+{id:'x3',vis:'y = x³',say:'y는 x의 세제곱',f:x=>x*x*x,df:x=>3*x*x,view:{xmin:-3,xmax:3,ymin:-6,ymax:6},start:-1,
+ specials:[{x:0,kind:'flat',label:'원점 (0, 0)',say:'원점',note:'접선은 수평(기울기 0)이지만 왼쪽과 오른쪽 모두 증가해요. 그래서 극값이 아니에요.',noteSay:'여기서 접선은 수평이지만, 왼쪽과 오른쪽 모두 증가해요. 그래서 극값이 아니에요.'}],
+ feats:['모든 구간에서 증가해요. 극댓값과 극솟값이 없어요.','x = 0에서 접선의 기울기가 0이지만 극값이 아니에요. “f′(a) = 0이어도 극값이 아닐 수 있다”는 대표 예예요.','원점 (0, 0)에서 x축, y축과 만나요.']},
+{id:'c2',vis:'y = x³ − 6x² + 9x',say:'y는 x 세제곱 빼기 6x 제곱 더하기 9x',f:x=>x*x*x-6*x*x+9*x,df:x=>3*x*x-12*x+9,view:{xmin:-1,xmax:5,ymin:-2,ymax:6},start:0.5,
+ specials:[{x:0,kind:'zero',label:'원점 (0, 0)',say:'원점',note:'원점에서 x축과 만나요.',noteSay:'그래프가 원점에서 x축과 만나요.'},
+  {x:1,kind:'ext',label:'극대점 (1, 4)',say:'극대점, 1 4',note:'극대점이에요. 극댓값 4',noteSay:'여기는 극대점이에요. 왼쪽에서는 증가하고 오른쪽에서는 감소해요. 극댓값은 4예요.'},
+  {x:3,kind:'ext',label:'극소점 (3, 0)',say:'극소점, 3 0',note:'극소점이에요. 극솟값 0. 이 점에서 x축에 접해요.',noteSay:'여기는 극소점이에요. 극솟값은 0이고, 이 점에서 그래프가 x축에 닿았다가 다시 올라가요.'}],
+ feats:['x = 1에서 극대, 극댓값은 4예요.','x = 3에서 극소, 극솟값은 0이에요.','x가 1보다 작을 때 증가, 1과 3 사이에서 감소, 3보다 클 때 다시 증가해요.','x = 0과 x = 3에서 x축과 만나요. x = 3에서는 x축에 닿기만 하고 다시 올라가요.']}
+];
+
+/* ===================== 진행 기록 ===================== */
+function prog(id){return S.progress[id]||{step:0,done:false};}
+function markDone(id){const p=S.progress[id]||(S.progress[id]={step:6,done:false});p.done=true;save();}
+function needsReview(id){const r=S.results['lc-'+id];if(r&&!r.first)return true;return QUIZ.some(q=>q.lesson===id&&S.results[q.id]&&!S.results[q.id].first);}
+function understand(id){const r=S.results['lc-'+id];if(needsReview(id))return '이해도: 복습 필요';if(r&&r.first)return '이해도: 잘 이해함';return '';}
+function statusText(id){const p=prog(id);const u=understand(id);let s=p.done?'✓ 학습 완료':p.step?`진행 중 · ${p.step}/6단계`:'시작 전';return s+(u?' · '+u:'');}
+
+/* ===================== 화면: 홈 ===================== */
+const SCALES=[[1,'보통 (100%)'],[1.3,'크게 (130%)'],[1.6,'더 크게 (160%)'],[2,'아주 크게 (200%)'],[2.5,'최대 (250%)']];
+function listRow(href,ic,tint,title,sub){return `<li><a class="row" href="${href}"><span class="ic" style="background:${tint}" aria-hidden="true">${ic}</span><span class="row-txt"><span class="row-title">${title}</span><span class="row-sub">${sub}</span></span><span class="chev" aria-hidden="true">›</span></a></li>`;}
+function sw(key,label,on){return `<button type="button" class="switch" data-quick="${key}" aria-pressed="${on?'true':'false'}"><span>${label}</span><span class="sw-r"><span class="tv">${on?'켜짐':'꺼짐'}</span><span class="sw-track" aria-hidden="true"></span></span></button>`;}
+function renderHome(){
+ const L=S.last&&LESSONS[S.last.lesson]?LESSONS[S.last.lesson]:null;
+ const done=ORDER.filter(id=>prog(id).done).length;
+ const cont=L?`<p class="big-title">${L.title}</p><div class="cta-meta"><span>${STEP_NAMES[S.last.step-1]}</span><b>${S.last.step} / 6단계</b></div><div class="progress" aria-hidden="true"><span style="width:${Math.round(S.last.step/6*100)}%"></span></div><p style="margin-top:1.1rem"><a class="btn primary block" href="#learn-${L.id}-${S.last.step}">이어서 학습하기</a></p>`
+  :`<p class="big-title">평균변화율부터 시작해요</p><p class="sub">두 점 사이의 기울기를 이해하는 첫 단계예요.</p><p style="margin-top:1.1rem"><a class="btn primary block" href="#learn-avg-1">학습 시작하기</a></p>`;
+ const sc=(SCALES.find(x=>x[0]===S.settings.scale)||[0,Math.round(S.settings.scale*100)+'%'])[1];
+ view.innerHTML=`<section class="hello" aria-labelledby="home-h"><p class="eyebrow">MathAble · 미적분Ⅰ</p><h1 id="home-h">보이지 않아도,<br>수학은 이해할 수 있도록.</h1></section>
+ <section class="card" aria-labelledby="cont-h"><h2 id="cont-h" class="card-eyebrow">${L?'이어서 학습하기':'처음 시작하기'}</h2>${cont}<p class="sub small" style="text-align:center;margin:.8rem 0 0">미분 개념 ${ORDER.length}개 중 ${done}개 완료</p></section>
+ <section class="card list-card" aria-labelledby="menu-h"><h2 id="menu-h" class="card-eyebrow">학습 메뉴</h2><ul class="list">
+  ${listRow('#toc','📈','var(--t1)','미분 학습','평균변화율부터 극대와 극소까지')}
+  ${listRow('#explore','🧭','var(--t4)','그래프 탐색','점을 움직이며 듣고 확인하는 그래프')}
+  ${listRow('#quiz-1','✏️','var(--t2)','문제 풀이','8문제 · 단계별 힌트와 오답 피드백')}
+  ${listRow('#access','⚙️','var(--t5)','접근성 설정','글자 크기, 고대비, 목소리')}
+  <li><div class="row disabled"><span class="ic" style="background:var(--t3)" aria-hidden="true">∫</span><span class="row-txt"><span class="row-title">적분 학습</span><span class="row-sub">다음 업데이트에서 열려요</span></span><span class="chip">준비 중</span></div></li>
+ </ul></section>
+ <section class="card" aria-labelledby="quick-h"><h2 id="quick-h" class="card-eyebrow">빠른 설정</h2>
+  <div class="stepper-ctl"><span><strong>글자 크기</strong><br><span class="val" id="cur-scale">${sc}</span></span><span class="btnrow" style="margin:0"><button type="button" class="btn" data-quick="smaller" aria-label="글자 작게">${ar('가－')}</button><button type="button" class="btn" data-quick="bigger" aria-label="글자 크게">${ar('가＋')}</button></span></div>
+  <div class="divider"></div>${sw('contrast','고대비 모드',S.settings.contrast)}<div class="divider"></div>${sw('theme','어두운 화면',S.settings.theme==='dark')}</section>
+ <section class="card" aria-labelledby="tip-h"><h2 id="tip-h" class="card-eyebrow">이렇게 써 보세요</h2><ul class="tips">
+  <li>그래프 바로 아래 회색 칸에 그래프 내용이 글로 나와요. VoiceOver로도 읽을 수 있어요.</li>
+  <li>수식을 누르면 크게 보고, 한 부분씩 나누어 읽을 수 있어요.</li>
+  <li>‘이 화면 듣기’를 누르면 VoiceOver 없이도 내용을 읽어 줘요.</li>
+  <li>그래프의 선과 점은 색이 아니라 <strong>모양</strong>으로 구분해요. 실선·긴 점선·짧은 점선, 동그라미·네모·마름모.</li>
+  <li>키보드가 있다면 그래프를 선택한 뒤 ← → 화살표로 점을 움직일 수 있어요.</li></ul></section>`;
+ view.onclick=e=>{const b=e.target.closest('[data-quick]');if(!b)return;const q=b.dataset.quick,s=S.settings;
+  if(q==='smaller'||q==='bigger'){let i=SCALES.findIndex(x=>x[0]===s.scale);if(i<0)i=1;i=clamp(i+(q==='bigger'?1:-1),0,SCALES.length-1);s.scale=SCALES[i][0];$('#cur-scale').textContent=SCALES[i][1];announce('글자 크기: '+SCALES[i][1]);}
+  else if(q==='contrast'){s.contrast=!s.contrast;setTog(b,s.contrast);announce(s.contrast?'고대비 모드를 켰어요.':'고대비 모드를 껐어요.');}
+  else if(q==='theme'){s.theme=s.theme==='dark'?'light':'dark';setTog(b,s.theme==='dark');announce(s.theme==='dark'?'어두운 화면으로 바꿨어요.':'밝은 화면으로 바꿨어요.');}
+  save();applySettings();};
+ finish('홈');
+}
+
+/* ===================== 화면: 목차 ===================== */
+const UNITS=[
+ {t:'UNIT 01. 미분의 기초',items:[['변화율의 의미','변화량과 변화율 구분','avg','평균변화율 1단계에서 함께 배워요'],['평균변화율','두 점 사이의 기울기 이해','avg'],['순간변화율','한 점에서의 변화 정도 이해','inst'],['미분계수','극한과 접선의 기울기 연결','deriv'],['도함수','함수의 변화 정보를 나타내는 함수 이해',null]]},
+ {t:'UNIT 02. 도함수의 활용',items:[['접선의 방정식','접선의 기울기와 방정식 이해',null],['함수의 증가와 감소','도함수의 부호 이해',null],['극대와 극소','극값의 정의 이해','ext'],['최댓값과 최솟값','극값과 전체 범위의 최대·최소 구분',null],['그래프 분석','도함수를 이용한 함수의 성질 파악',null]]},
+ {t:'UNIT 03. 적분의 기초',items:[['부정적분','미분의 역연산 이해',null],['적분상수','적분상수의 의미 이해',null],['정적분','구간에서의 누적 변화 이해',null],['정적분의 계산','적분 공식과 계산 과정 이해',null]]},
+ {t:'UNIT 04. 적분의 활용',items:[['정적분과 넓이','정적분과 도형의 넓이 연결',null],['곡선과 x축 사이의 넓이','부호와 실제 넓이 구분',null],['두 곡선 사이의 넓이','두 함수의 차이 활용',null],['미분과 적분의 관계','미적분의 기본정리 이해',null]]}];
+function renderToc(){
+ const lastId=S.last&&S.last.lesson;let num=0;
+ const rowFor=([t,g,id,sub])=>{num++;
+  if(!id)return `<li><div class="row disabled"><span class="num" aria-hidden="true">${num}</span><span class="row-txt"><span class="row-title">${t}</span><span class="row-sub">${g}</span></span><span class="chip">준비 중</span></div></li>`;
+  if(sub)return `<li><a class="row" href="#learn-${id}-1"><span class="num" aria-hidden="true">${num}</span><span class="row-txt"><span class="row-title">${t}</span><span class="row-sub">${g}</span><span class="chips"><span class="chip">${sub}</span></span></span><span class="chev" aria-hidden="true">›</span></a></li>`;
+  const here=id===lastId,p=prog(id),chips=[];
+  if(here)chips.push(`<span class="chip dark">마지막 학습 · ${S.last.step}단계</span>`);
+  chips.push(p.done?'<span class="chip blue">✓ 학습 완료</span>':p.step?`<span class="chip">진행 중 ${p.step}/6</span>`:'<span class="chip">시작 전</span>');
+  if(needsReview(id))chips.push('<span class="chip orange">복습 필요</span>');
+  else if(S.results['lc-'+id]&&S.results['lc-'+id].first)chips.push('<span class="chip blue">잘 이해함</span>');
+  return `<li><a class="row${here?' here':''}" href="#learn-${id}-${here?S.last.step:1}"><span class="num" aria-hidden="true">${num}</span><span class="row-txt"><span class="row-title">${t}</span><span class="row-sub">${g}</span><span class="chips">${chips.join('')}</span></span><span class="chev" aria-hidden="true">›</span></a></li>`;};
+ const html=UNITS.map((u,ui)=>{num=0;return `<section class="card list-card" aria-labelledby="unit-${ui}"><h2 id="unit-${ui}" class="card-eyebrow">${u.t}</h2><ul class="list">${u.items.map(rowFor).join('')}</ul></section>`;}).join('');
+ const rev=ORDER.filter(needsReview);
+ view.innerHTML=`<h1>학습 목차</h1><p class="sub">교과서 미적분Ⅰ 진도에 맞춘 목차예요. 지금은 미분 핵심 개념 4개를 학습할 수 있어요.</p>
+ ${rev.length?`<section class="card" aria-labelledby="rev-h"><h2 id="rev-h" class="card-eyebrow" style="color:var(--orange-text)">복습이 필요한 개념</h2><div class="btnrow" style="margin-bottom:0">${rev.map(id=>`<a class="btn weak" href="#learn-${id}-1">${LESSONS[id].title} 다시 보기</a>`).join('')}</div></section>`:''}${html}`;
+ finish('학습 목차');
+}
+
+/* ===================== 화면: 개념 학습 ===================== */
+let curLesson=null;
+function renderLesson(id,n){
+ const L=LESSONS[id],st=L.steps[n-1];
+ S.last={lesson:id,step:n};const p=S.progress[id]||(S.progress[id]={step:0,done:false});p.step=Math.max(p.step,n);save();
+ const stepper=STEP_NAMES.map((nm,i)=>{const cur=i+1===n,seen=i+1<=p.step&&!cur;return `<li><a href="#learn-${id}-${i+1}" class="stp${cur?' cur':''}${seen?' seen':''}"${cur?' aria-current="step"':''}><span class="stp-n" aria-hidden="true">${i+1}</span><span>${nm}</span><span class="sr-only">, ${i+1}단계${seen?', 본 단계':''}</span></a></li>`;}).join('');
+ const prev=n>1?`<a class="btn" href="#learn-${id}-${n-1}">이전: ${STEP_NAMES[n-2]}</a>`:(L.prev?`<a class="btn" href="#learn-${L.prev}-6">이전 개념: ${LESSONS[L.prev].title}</a>`:`<a class="btn" href="#toc">학습 목차</a>`);
+ const next=n<6?`<a class="btn primary" href="#learn-${id}-${n+1}">다음: ${STEP_NAMES[n]}</a>`:(L.next?`<a class="btn primary" href="#learn-${L.next}-1">다음 개념: ${LESSONS[L.next].title}</a>`:`<a class="btn primary" href="#quiz-1">문제 풀이 하러 가기</a>`);
+ view.innerHTML=`<nav class="crumbs" aria-label="현재 위치"><a href="#toc">학습 목차</a> ${ar('›')} ${L.unit}</nav>
+ <h1>${L.title}</h1><p class="sub">${L.goal}</p>
+ <div class="lp" aria-hidden="true"><div class="lp-top"><span>${STEP_NAMES[n-1]}</span><b>${n} / 6단계</b></div><div class="progress"><span style="width:${Math.round(n/6*100)}%"></span></div></div>
+ <nav aria-label="학습 단계, 6단계 중 ${n}단계"><ol class="stepper">${stepper}</ol></nav>
+ <section class="card step" aria-labelledby="step-h"><div class="step-head"><h2 id="step-h"><span class="stepno">${n}단계</span>${STEP_NAMES[n-1]}</h2><button type="button" class="btn weak sm no-speak" id="speak-step">${ar('🔊')} 이 화면 듣기</button></div>
+  <div class="step-body">${st.html()}</div></section>
+ <nav class="pager" aria-label="단계 이동">${prev}${next}</nav>`;
+ const body=$('.step-body',view);if(st.setup)st.setup(body);
+ const readAll=()=>speak(`${L.title}, ${n}단계, ${STEP_NAMES[n-1]}. `+speakable(body));
+ $('#speak-step').onclick=readAll;
+ const same=curLesson===id;curLesson=id;
+ finish(`${L.title} ${n}단계`,same?$('#step-h'):null);
+ if(S.settings.autoSpeak)readAll();
+}
+
+/* ===================== 화면: 그래프 탐색 ===================== */
+const EXP={fid:'cub',x:-2,step:0.5,tan:true,grid:true,snd:false};
+function renderExplore(){
+ const cur=()=>FUNCS.find(f=>f.id===EXP.fid);
+ view.innerHTML=`<h1>그래프 탐색</h1>
+ <p class="lead" style="font-weight:600">함수를 고른 뒤 점 P를 움직이며 함수값과 접선의 기울기를 확인해 보세요.</p><p>그래프를 직접 눌러도 점 P가 그 위치로 이동해요. ‘특별한 점’ 버튼을 누르면 극대·극소·x절편으로 바로 갈 수 있어요.</p>
+ <fieldset class="choices"><legend>함수 고르기</legend><div class="seg">${FUNCS.map(F=>`<label class="opt"><input type="radio" name="fsel" value="${F.id}"${F.id===EXP.fid?' checked':''}><span aria-hidden="true">${F.vis}</span><span class="sr-only">${F.say}</span></label>`).join('')}</div></fieldset>
+ <section class="card" aria-label="그래프와 조작 버튼"><div id="exhost"></div></section>
+ <section class="card" aria-labelledby="feat-h"><h2 id="feat-h">이 그래프의 특징</h2><ul id="feats" class="tips"></ul>
+  <div class="btnrow no-speak"><button type="button" class="btn" id="feat-say">${ar('🔊')} 특징 듣기</button><button type="button" class="btn" id="feat-stop">${ar('■')} 멈추기</button></div></section>
+ <section class="card" aria-labelledby="snd-h"><h2 id="snd-h">소리로 그래프 듣기</h2>
+  <p>지금 보이는 범위의 왼쪽 끝부터 오른쪽 끝까지 4초 동안 그래프를 소리로 들려줘요.</p>
+  <ul class="tips"><li>음이 높을수록 y값이 커요.</li><li>소리는 왼쪽 스피커에서 오른쪽 스피커로 옮겨 가요. (이어폰 추천)</li><li>“띵, 띵” 두 번 울리면 극대 또는 극소, “톡” 하고 짧게 울리면 x축과 만나는 점이에요.</li><li>그래프가 화면 위나 아래로 벗어나면 소리가 잠시 멈춰요.</li></ul>
+  <div class="btnrow"><button type="button" class="btn primary" id="sweep">${ar('🎵')} 그래프 소리로 훑기</button><button type="button" class="btn" id="sweep-stop">${ar('■')} 소리 멈추기</button></div></section>
+ <section class="card" aria-labelledby="how-h"><h2 id="how-h">조작 방법</h2><ul class="tips">
+  <li>점 P 이동: ‘왼쪽으로’, ‘오른쪽으로’ 버튼. 이동 간격은 1, 0.5, 0.1 중에서 고를 수 있어요.</li>
+  <li>화면 확대·축소: 점 P를 중심으로 확대해요. 확대하면 눈금이 더 촘촘해져요.</li>
+  <li>키보드: 그래프를 선택한 뒤 ← → 로 점 이동, + − 로 확대·축소.</li>
+  <li>‘이동할 때 소리’를 켜면 점을 옮길 때마다 높이를 음으로 알려 줘요.</li></ul></section>`;
+ const P=graphPanel($('#exhost'),{title:'그래프 탐색',f:cur().f,view:Object.assign({},cur().view),pan:true,
+  legend:[['func','실선: 선택한 함수의 그래프'],['tan','짧은 점선: 점 P에서의 접선'],['ptd','마름모: 점 P'],['pth','속이 빈 동그라미: 특별한 점 (극대·극소·x절편)']],
+  controls:row('점 P 이동',[['p-',ar('◀')+' 왼쪽으로'],['p+','오른쪽으로 '+ar('▶')],['say','현재 위치 듣기']])
+   +`<div class="btnrow" role="group" aria-label="이동 간격"><span class="grp-lab" aria-hidden="true">이동 간격</span>${[1,0.5,0.1].map(s=>`<button type="button" class="btn" data-act="step" data-v="${s}" aria-pressed="${s===EXP.step}">${s}씩</button>`).join('')}</div>`
+   +`<div class="btnrow sp-row" role="group" aria-label="특별한 점으로 이동"></div>`
+   +`<div class="btnrow" role="group" aria-label="보기 설정"><span class="grp-lab" aria-hidden="true">보기</span>${tog('tan','접선',EXP.tan)}${tog('grid','격자',EXP.grid)}${tog('snd','이동할 때 소리',EXP.snd)}</div>`,
+  focus:()=>[EXP.x,cur().f(EXP.x)],
+  onPick:x=>{EXP.x=rnd(Math.round(x/EXP.step)*EXP.step);upd();},
+  onKey:k=>{if(k==='ArrowLeft'){move(-1);return true;}if(k==='ArrowRight'){move(1);return true;}if(k==='+'||k==='='){P.zoomIn();return true;}if(k==='-'||k==='_'){P.zoomOut();return true;}return false;}});
+ function buildFunc(){
+  const F=cur();P.g.f=F.f;P.g.v0=Object.assign({},F.view);P.g.reset();
+  P.g.o.title=F.vis+' 그래프';$('title',P.g.svg).textContent=F.say+' 그래프';
+  $('.sp-row',P.host).innerHTML=`<span class="grp-lab" aria-hidden="true">특별한 점</span>`+F.specials.map((s,i)=>`<button type="button" class="btn" data-act="sp" data-i="${i}" aria-label="${esc(s.say+'으로 이동')}">${s.label}</button>`).join('');
+  $('#feats').innerHTML=F.feats.map(t=>`<li>${t}</li>`).join('');
+ }
+ function upd(quiet){
+  const F=cur(),x=EXP.x,y=F.f(x),m=F.df(x);P.g.grid=EXP.grid;
+  const ov=[];if(EXP.tan)ov.push({t:'line',p:[x,y],m,c:'tan'});
+  F.specials.forEach(s=>ov.push({t:'pt',p:[s.x,F.f(s.x)],shape:'circle',hollow:true,r:7}));
+  ov.push({t:'pt',p:[x,y],shape:'diamond',r:10,label:`P(${fmt(x)}, ${fmt(y)})`,pos:Math.abs(m)<1e-9?(F.df(x+0.01)>0&&F.df(x-0.01)<0?'s':'n'):m>0?'nw':'ne'});
+  const sp=F.specials.find(s=>Math.abs(s.x-x)<1e-6);
+  const flat=Math.abs(m)<1e-9;
+  const tr=flat?'접선이 수평 (기울기 0)':m>0?'증가하는 중 ↗':'감소하는 중 ↘';
+  const trS=flat?'접선이 수평이에요':m>0?'증가하는 중이에요':'감소하는 중이에요';
+  const vis=`<p class="ro-main">P(${fmt(x)}, ${fmt(y)})</p><ul class="ro-list"><li>함수값 f(${fmt(x)}) = <b>${fmt(y)}</b></li><li>접선의 기울기 f′(${fmt(x)}) = <b>${fmt(m)}</b> → ${tr}</li>${sp?`<li class="ro-sp">★ ${sp.label}: ${sp.note}</li>`:''}<li>보이는 범위 ${P.g.rangeVis()}</li></ul>`;
+  const say=`점 P, x ${sayN(x)}, y ${sayN(y)}. 접선의 기울기 ${sayN(m)}, ${trS}. ${sp?sp.noteSay:''}`;
+  P.g.draw(ov,`${F.say} 그래프. ${say}`);P.set(vis,say,quiet);
+  if(!quiet&&EXP.snd)pointTone(y,P.g.v,x);
+ }
+ function move(d){EXP.x=rnd(EXP.x+d*EXP.step);if(Math.abs(EXP.x)>50){EXP.x=clamp(EXP.x,-50,50);announce('더 이상 움직일 수 없어요.');}P.g.ensure(EXP.x,cur().f(EXP.x));upd();}
+ P.on('p-',()=>move(-1));P.on('p+',()=>move(1));
+ P.on('say',()=>speak($('[role=status]',P.host).textContent));
+ P.on('step',b=>{EXP.step=+b.dataset.v;$$('[data-act="step"]',P.host).forEach(x=>setTog(x,x===b));announce(`이동 간격을 ${EXP.step}로 바꿨어요.`);});
+ P.on('sp',b=>{const s=cur().specials[+b.dataset.i];EXP.x=s.x;P.g.ensure(s.x,cur().f(s.x));upd();});
+ P.on('tan',b=>{EXP.tan=!EXP.tan;setTog(b,EXP.tan);upd(true);announce(EXP.tan?'접선을 보여 줘요.':'접선을 숨겼어요.');});
+ P.on('grid',b=>{EXP.grid=!EXP.grid;setTog(b,EXP.grid);upd(true);announce(EXP.grid?'격자를 보여 줘요.':'격자를 숨겼어요.');});
+ P.on('snd',b=>{EXP.snd=!EXP.snd;setTog(b,EXP.snd);if(EXP.snd)ac();announce(EXP.snd?'점을 옮길 때 소리로 높이를 알려 줘요.':'이동 소리를 껐어요.');});
+ P.redraw=upd;
+ $$('input[name=fsel]',view).forEach(r=>r.addEventListener('change',()=>{EXP.fid=r.value;EXP.x=cur().start;buildFunc();upd(true);announce(cur().say+' 그래프로 바꿨어요. '+$('[role=status]',P.host).textContent);}));
+ $('#feat-say').onclick=()=>speak(cur().say+' 그래프의 특징. '+cur().feats.join(' '));$('#feat-stop').onclick=stopSpeak;
+ $('#sweep').onclick=()=>{sweep(cur().f,P.g.v,cur().specials);announce('그래프를 소리로 들려줄게요.',false);};
+ $('#sweep-stop').onclick=stopSweep;
+ buildFunc();upd(true);
+ finish('그래프 탐색');
+}
+
+/* ===================== 화면: 문제 풀이 ===================== */
+function qState(q){const r=S.results[q.id];return !r?'안 풂':r.first?'✓ 맞힘':r.solved?'다시 풀어 맞힘':'✗ 틀림';}
+function renderQuiz(n){
+ n=clamp(n||1,1,QUIZ.length);const q=QUIZ[n-1];
+ const prev=n>1?`<a class="btn" href="#quiz-${n-1}">${ar('◀ ')}이전 문제</a>`:`<a class="btn" href="#home">${ar('◀ ')}홈으로</a>`;
+ const next=n<QUIZ.length?`<a class="btn primary" href="#quiz-${n+1}">다음 문제 ${ar('▶')}</a>`:`<a class="btn primary" href="#quiz-done">결과 보기 ${ar('▶')}</a>`;
+ view.innerHTML=`<h1>문제 풀이</h1>
+ <div class="lp"><div class="lp-top"><span>${q.type==='mc'?'객관식':'주관식'} · ${LESSONS[q.lesson].title}</span><b>${n} / ${QUIZ.length}</b></div><div class="progress" aria-hidden="true"><span style="width:${Math.round(n/QUIZ.length*100)}%"></span></div></div>
+ <section class="card" aria-label="문제 ${n}"><div class="chips" style="margin:0 0 .7rem"><span class="chip dark">문제 ${n}</span><span class="chip">${qState(q)}</span></div><div class="q-host"></div></section>
+ <nav class="pager" aria-label="문제 이동">${prev}${next}</nav>
+ <details class="sol"><summary>전체 문제 목록과 풀이 상태</summary><div class="sol-body"><ul class="qnav">${QUIZ.map((qq,i)=>`<li><a class="btn${i+1===n?' primary':''}" href="#quiz-${i+1}"${i+1===n?' aria-current="page"':''}>${i+1}번 · ${qState(qq)}</a></li>`).join('')}</ul></div></details>`;
+ mountQ($('.q-host',view),q,{});
+ finish(`문제 ${n}`);
+}
+function renderQuizDone(){
+ const tried=QUIZ.filter(q=>S.results[q.id]),first=QUIZ.filter(q=>S.results[q.id]&&S.results[q.id].first),wrong=QUIZ.filter(q=>S.results[q.id]&&!S.results[q.id].first);
+ const lessons=[...new Set(wrong.map(q=>q.lesson))];
+ view.innerHTML=`<h1>문제 풀이 결과</h1>
+ <section class="card"><h2 class="card-eyebrow">처음 시도에서 맞힌 문제</h2><p class="big-num">${first.length}<small> / ${QUIZ.length}문제</small></p><div class="progress" aria-hidden="true"><span style="width:${Math.round(first.length/QUIZ.length*100)}%"></span></div><p class="sub">푼 문제 ${tried.length}개 · 아직 풀지 않은 문제 ${QUIZ.length-tried.length}개</p></section>
+ <section class="card"><h2>복습이 필요한 개념</h2>${lessons.length?`<ul>${lessons.map(id=>`<li><a href="#learn-${id}-1">${LESSONS[id].title}</a> 다시 학습하기</li>`).join('')}</ul>`:'<p>처음 시도에서 틀린 문제가 없어요. 잘했어요!</p>'}</section>
+ <section class="card"><h2>오답 기록</h2>${wrong.length?`<ul>${wrong.map(q=>`<li><a href="#quiz-${QUIZ.indexOf(q)+1}">${QUIZ.indexOf(q)+1}번 문제 (${LESSONS[q.lesson].title})</a> · ${S.results[q.id].solved?'다시 풀어 맞힘':'아직 못 맞힘'}</li>`).join('')}</ul>`:'<p>오답이 없어요.</p>'}</section>
+ <div class="pager"><button type="button" class="btn" id="qreset">문제 기록 지우고 처음부터</button><a class="btn primary" href="#toc">학습 목차로</a></div><div id="qconfirm"></div>`;
+ $('#qreset').onclick=()=>{$('#qconfirm').innerHTML=`<div class="confirm" role="alert"><p>문제 풀이 기록을 지울까요? 개념 학습 기록은 남아요.</p><div class="btnrow"><button type="button" class="btn primary" id="qyes">네, 지웁니다</button><button type="button" class="btn" id="qno">취소</button></div></div>`;
+  $('#qyes').onclick=()=>{QUIZ.forEach(q=>delete S.results[q.id]);save();go('#quiz-1');};$('#qno').onclick=()=>{$('#qconfirm').innerHTML='';$('#qreset').focus();};$('#qyes').focus();};
+ finish('문제 풀이 결과');
+}
+
+/* ===================== 화면: 접근성 설정 ===================== */
+function seg(name,legend,opts,cur,desc){return `<fieldset class="setgrp"><legend>${legend}</legend>${desc?`<p class="help">${desc}</p>`:''}<div class="seg">${opts.map(([v,l])=>`<label class="opt"><input type="radio" name="${name}" value="${v}"${String(v)===String(cur)?' checked':''}><span>${l}</span></label>`).join('')}</div></fieldset>`;}
+function voiceSecHTML(){
+ const s=S.settings,ai=!!CT,eng=s.engine==='device'?'device':'auto';let h='';
+ if(!ctReady)h+='<div class="notice"><p class="notice-title">쓸 수 있는 목소리를 확인하는 중이에요…</p></div>';
+ else if(ai)h+=`<div class="notice ok"><p class="notice-title">사람 목소리에 가까운 AI 목소리를 쓸 수 있어요</p><p>‘이 화면 듣기’가 자연스러운 AI 목소리로 나와요. 오래 들어도 덜 피곤해요.</p></div>`;
+ else if(ctDenied)h+=`<div class="notice"><p class="notice-title">AI 목소리 읽기가 꺼져 있어요</p><p>이 페이지의 권한 메뉴에서 다시 켤 수 있어요. 아래에서 ‘기기 목소리’를 고르면 기기 목소리로 읽어 줘요.</p></div>`;
+ else h+=`<div class="notice"><p class="notice-title">지금은 기기에 들어 있는 목소리를 써요</p><p>아이패드라면 아래 방법으로 ‘고품질’ 목소리를 받아 두세요. 훨씬 자연스럽게 들려요.</p></div>`;
+ if(ai||ctDenied)h+=seg('engine','읽어 주기 목소리',[['auto',ai?'AI 목소리 (추천)':'AI 목소리'],['device','기기 목소리']],eng);
+ if(ai&&eng==='auto')h+=seg('cvoice','AI 목소리 느낌',CVOICES,s.cvoice,'한국어 문장은 느낌을 바꿔도 비슷하게 들릴 수 있어요.');
+ if(!ai||eng==='device'){const vs=koVoices();
+  h+=`<label class="field"><span class="field-lab">기기 목소리</span><select id="dvoice" class="select"><option value="">자동 선택 (고품질 목소리 먼저)</option>${vs.map(v=>`<option value="${esc(v.voiceURI)}"${v.voiceURI===s.dvoice?' selected':''}>${esc(v.name)}${isHQ(v)?' · 고품질':''}</option>`).join('')}</select></label>${vs.length?'':'<p class="help">이 기기에서 한국어 목소리를 찾지 못했어요.</p>'}`;}
+ h+=seg('rate','말하는 속도',[['0.7','느리게'],['0.85','조금 느리게'],['1','보통'],['1.2','빠르게'],['1.45','아주 빠르게']],s.rate,'VoiceOver 속도는 아이패드 설정에서 따로 바꿔요.');
+ h+=`<div class="btnrow"><button type="button" class="btn weak" id="test-voice">${ar('🔊')} 목소리 들어 보기</button></div>`;
+ h+=seg('autoSpeak','자동으로 읽어 주기',[['0','끄기'],['1','켜기']],s.autoSpeak?1:0,'켜면 화면이 바뀌거나 점을 옮길 때 자동으로 읽어 줘요. VoiceOver를 쓸 때는 소리가 겹치니 꺼 두세요.');
+ if(!ai)h+=`<details class="sol"><summary>아이패드에서 더 자연스러운 목소리 받기</summary><div class="sol-body"><ol class="tips">
+  <li>설정 앱 → 손쉬운 사용 → 읽기 및 말하기 → 음성 → 한국어로 들어가요.</li>
+  <li>목소리(예: 유나)를 고르고 ‘고품질’ 또는 ‘향상된 음질’ 버전을 내려받아요. 용량이 커서 와이파이에서 받는 게 좋아요.</li>
+  <li>이 페이지를 다시 열고, 위 ‘기기 목소리’에서 ‘고품질’이 붙은 목소리를 고르세요.</li>
+  <li>VoiceOver 목소리도 바꾸려면 설정 → 손쉬운 사용 → VoiceOver → 말하기 → 음성에서 같은 목소리를 고르세요.</li></ol>
+  <p class="help">메뉴 이름은 iPadOS 버전에 따라 조금 다를 수 있어요.</p></div></details>`;
+ return h;
+}
+function renderAccess(){
+ const s=S.settings;
+ view.innerHTML=`<h1>접근성 설정</h1><p class="sub">바꾸는 즉시 적용되고, 이 기기에 저장돼요.</p>
+ <section class="card" aria-labelledby="set-screen"><h2 id="set-screen">화면</h2>
+  ${seg('scale','글자 크기',SCALES.map(([v])=>[v,Math.round(v*100)+'%']),s.scale,'화면 전체의 글자와 버튼이 함께 커져요.')}
+  ${seg('contrast','고대비 모드',[['0','보통'],['1','고대비']],s.contrast?1:0,'고대비에서는 모든 카드와 버튼에 진한 테두리가 생기고 색이 더 진해져요.')}
+  ${seg('theme','배경',[['light','밝게'],['dark','어둡게']],s.theme)}
+  ${seg('btn','버튼 크기',[['normal','보통'],['large','크게'],['xl','아주 크게']],s.btn)}
+  ${seg('gw','그래프 선 굵기',[['1','보통'],['1.3','굵게'],['1.7','아주 굵게']],s.gw)}
+ </section>
+ <section class="card" aria-labelledby="set-voice"><h2 id="set-voice">목소리</h2><div id="voice-sec">${voiceSecHTML()}</div></section>
+ <section class="card" aria-labelledby="pv-h"><h2 id="pv-h">미리보기</h2><p>함수 ${m('f(x)=x^2','f x는 x 제곱')}의 그래프와 할선, 접선이에요. 선은 색이 아니라 모양으로 구분해요.</p>
+  <div class="gbox no-speak" id="pv"></div>
+  <ul class="legend" style="margin-top:.7rem"><li>${sample('func')}<span>실선: 곡선</span></li><li>${sample('sec')}<span>긴 점선: 할선</span></li><li>${sample('tan')}<span>짧은 점선: 접선</span></li><li>${sample('ptc')}<span>동그라미, ${sample('pts')} 네모: 점</span></li></ul></section>
+ <section class="card" aria-labelledby="rs-h"><h2 id="rs-h">초기화</h2><div class="btnrow"><button type="button" class="btn" id="reset-set">설정을 처음 상태로</button><button type="button" class="btn" id="reset-all">학습 기록 모두 지우기</button></div><div id="rconfirm"></div></section>`;
+ const pg=new Graph($('#pv'),{title:'미리보기: y는 x 제곱 그래프와 할선, 접선',f:x=>x*x,view:{xmin:-2.5,xmax:3.5,ymin:-1,ymax:9},H:380});
+ const pd=()=>pg.draw([{t:'line',p:[1,1],m:2,c:'tan'},{t:'line',p:[0,0],m:2.5,c:'sec'},{t:'pt',p:[1,1],shape:'circle',label:'A(1, 1)',pos:'nw'},{t:'pt',p:[2.5,6.25],shape:'square',label:'B',pos:'se'}],'곡선 y는 x 제곱, 점 A에서의 접선, 원점과 B를 잇는 할선');
+ pd();ACTIVE.push({redraw:pd});
+ const names={scale:'글자 크기',contrast:'고대비 모드',theme:'배경',btn:'버튼 크기',gw:'그래프 선 굵기',rate:'말하는 속도',autoSpeak:'자동으로 읽어 주기',engine:'읽어 주기 목소리',cvoice:'AI 목소리 느낌'};
+ view.onchange=e=>{const t=e.target;
+  if(t.id==='dvoice'){s.dvoice=t.value;save();announce('기기 목소리를 바꿨어요.');return;}
+  if(t.type!=='radio'||!names[t.name])return;const v=t.value;
+  if(t.name==='contrast'||t.name==='autoSpeak')s[t.name]=v==='1';else if(['scale','gw','rate'].includes(t.name))s[t.name]=+v;else s[t.name]=v;
+  save();applySettings();
+  if(t.name==='engine'){refreshVoiceUI();const r=$('input[name=engine]:checked',view);if(r)r.focus();}
+  announce(`${names[t.name]}: ${t.closest('label').textContent.trim()}`);};
+ view.onclick=e=>{if(e.target.closest('#test-voice'))speak('안녕하세요. 저는 MathAble의 읽어 주기 목소리예요. 함수 y는 x 제곱에서, x가 1일 때 접선의 기울기는 2예요.');};
+ $('#reset-set').onclick=()=>{S.settings=Object.assign({},DEF);save();applySettings();renderAccess();announce('설정을 처음 상태로 돌렸어요.');};
+ $('#reset-all').onclick=()=>{$('#rconfirm').innerHTML=`<div class="confirm" role="alert"><p>학습 진행, 이해도, 문제 풀이 기록을 모두 지울까요? 되돌릴 수 없어요.</p><div class="btnrow"><button type="button" class="btn primary" id="ryes">네, 모두 지울게요</button><button type="button" class="btn" id="rno">취소</button></div></div>`;
+  $('#ryes').onclick=()=>{S.progress={};S.results={};S.last=null;save();$('#rconfirm').innerHTML='<p class="done-msg" role="status">학습 기록을 모두 지웠어요.</p>';};$('#rno').onclick=()=>{$('#rconfirm').innerHTML='';$('#reset-all').focus();};$('#ryes').focus();};
+ finish('접근성 설정');
+}
+
+/* ===================== 설정 적용 ===================== */
+function applySettings(){const s=S.settings,r=document.documentElement;
+ r.style.setProperty('--scale',s.scale);r.style.setProperty('--gw',s.gw);r.style.setProperty('--tap',{normal:'48px',large:'60px',xl:'76px'}[s.btn]||'60px');
+ r.dataset.theme=s.theme;r.dataset.contrast=s.contrast?'high':'normal';r.classList.toggle('big',s.scale>=1.6);
+ if(CT&&CT.setRate){try{const q=CT.setRate(s.rate);if(q&&q.catch)q.catch(()=>{});}catch(e){}}
+ ACTIVE.forEach(a=>{try{a.redraw&&a.redraw(true);}catch(e){}});}
+
+/* ===================== 수식 크게 보기 ===================== */
+const dlg=$('#fdlg');let dlgOpener=null,fz=2.2;
+document.addEventListener('click',e=>{const b=e.target.closest('.formula');if(!b)return;const F=FORMULAS[+b.dataset.fid];if(!F)return;
+ const mj=$('mjx-container',b);$('#fd-math').innerHTML=mj?mj.outerHTML:esc(F.tex);
+ $('#fd-say').textContent=F.say;$('#fd-parts').innerHTML=F.parts.map(p=>`<li>${esc(p)}</li>`).join('');$('#fd-parts-wrap').hidden=!F.parts.length;
+ dlgOpener=b;dlg.style.setProperty('--fz',fz);
+ if(dlg.showModal){try{dlg.showModal();}catch(err){dlg.setAttribute('open','');}}else dlg.setAttribute('open','');
+ $('#fd-close').focus();
+ if(S.settings.autoSpeak)speak(F.say);});
+function closeDlg(){if(dlg.close)dlg.close();else dlg.removeAttribute('open');}
+dlg.addEventListener('close',()=>{stopSpeak();if(dlgOpener)dlgOpener.focus();});
+$('#fd-close').onclick=closeDlg;
+dlg.addEventListener('click',e=>{if(e.target===dlg)closeDlg();});
+$('#fd-bigger').onclick=()=>{fz=clamp(fz+0.6,1.2,6);dlg.style.setProperty('--fz',fz);announce('수식을 크게 했어요.',false);};
+$('#fd-smaller').onclick=()=>{fz=clamp(fz-0.6,1.2,6);dlg.style.setProperty('--fz',fz);announce('수식을 작게 했어요.',false);};
+$('#fd-speak').onclick=()=>{const parts=$$('#fd-parts li').map(l=>l.textContent);speak($('#fd-say').textContent+'. '+parts.join('. '));};
+
+/* ===================== 라우터 ===================== */
+function finish(title,focusEl){document.title=title+' | MathAble';typeset(view);
+ const el=focusEl||$('h1',view);if(el){el.setAttribute('tabindex','-1');try{el.focus({preventScroll:true});}catch(e){el.focus();}}
+ if(focusEl)focusEl.scrollIntoView({block:'start'});else window.scrollTo(0,0);}
+function markNav(h){const sec=h.startsWith('learn-')?'toc':h.startsWith('quiz')?'quiz':h;$$('.navlink').forEach(a=>{if(a.dataset.nav===sec)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});}
+function route(){
+ stopSpeak();stopSweep();ACTIVE=[];FORMULAS=[];view.onclick=null;view.onchange=null;
+ if(window.__mj&&MathJax.typesetClear)try{MathJax.typesetClear();}catch(e){}
+ const h=(location.hash||'#home').slice(1)||'home';let mm;
+ if(h==='toc')renderToc();
+ else if(h==='explore')renderExplore();
+ else if(h==='access')renderAccess();
+ else if(h==='quiz-done')renderQuizDone();
+ else if((mm=h.match(/^quiz-(\d+)$/)))renderQuiz(+mm[1]);
+ else if(h==='quiz')renderQuiz(1);
+ else if((mm=h.match(/^learn-([a-z]+)-(\d)$/))&&LESSONS[mm[1]])renderLesson(mm[1],clamp(+mm[2],1,6));
+ else renderHome();
+ if(!h.startsWith('learn-'))curLesson=null;
+ markNav(h);
+}
+let skipHash=false;
+function go(href){if(location.hash!==href){skipHash=true;location.hash=href;}route();}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey)return;e.preventDefault();go(a.getAttribute('href'));});
+window.addEventListener('hashchange',()=>{if(skipHash){skipHash=false;return;}route();});
+$('#skip').onclick=()=>{const h=$('h1',view)||$('#main');h.setAttribute('tabindex','-1');h.focus();};
+applySettings();route();
+$('#pill-stop').onclick=stopSpeak;
+initCT();
+})();
+</script>
+</body>
+</html>
